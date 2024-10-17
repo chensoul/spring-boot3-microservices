@@ -1,12 +1,12 @@
 name: ecommerce
 
 services:
-  eureka:
-    image: chensoul/eureka
+  eureka-server:
+    image: chensoul/eureka-server
     ports:
       - "8761:8761"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://eureka:8761" ]
+      test: [ "CMD", "curl", "-f", "http://eureka-server:8761" ]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -18,7 +18,7 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-      eureka:
+      eureka-server:
         condition: service_healthy
 
   notification-service:
@@ -28,19 +28,17 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-      eureka:
+      eureka-server:
         condition: service_healthy
 
   order-service:
     image: chensoul/order-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - "8040:8080"
     depends_on:
       postgres:
         condition: service_healthy
-      eureka:
+      eureka-server:
         condition: service_healthy
 
   payment-service:
@@ -50,7 +48,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      eureka:
+      eureka-server:
         condition: service_healthy
 
   product-service:
@@ -60,7 +58,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      eureka:
+      eureka-server:
         condition: service_healthy
 
   postgres:

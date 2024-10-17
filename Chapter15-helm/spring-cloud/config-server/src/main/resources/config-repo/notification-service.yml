@@ -1,5 +1,4 @@
-server:
-  port: 8030
+server.port: 8030
 
 spring:
   data:
@@ -28,7 +27,7 @@ spring:
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
-      group-id: paymentGroup,orderGroup
+      group-id: notificationGroup
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -47,6 +46,6 @@ spring.mail.host: maildev
 
 spring.kafka.consumer.bootstrap-servers: kafka:9092
 
-eureka.client.serviceUrl.defaultZone: http://eureka:8761/eureka/
+eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka/
 
 loki.url: http://loki:3100/loki/api/v1/push

@@ -47,21 +47,21 @@ Breaker、Spring Cloud Config、Spring Cloud Netflix Eureka、Micrometer Tracing
 
 ## 技术栈
 
-| 技术选型                                | 使用版本 | 最新版本                                                     | 备注 |
-| --------------------------------------- | -------- | ------------------------------------------------------------ | ---- |
-| Java                                    | 21       | 23                                                           |      |
-| Maven                                   | 3.9.9    | 3.9.9                                                        |      |
-| PostgreSQL                              | 17       | 17                                                           |      |
-| MongoDB                                 | 8        | 8.0.1                                                        |      |
-| Rabbitmq                                | 4        | 4                                                            |      |
-| Kafka                                   | 3.8      | 3.8                                                          |      |
-| ActiveMQ                                | 6        |                                                              |      |
-| Kubernetes                              | 1.31     |                                                              |      |
-| Grafana (Prometheus/Grafana/Loki/Tempo) |          |                                                              |      |
-| Spring Boot                             | 3.3.4    | <img src="https://img.shields.io/maven-metadata/v?label=&color=blue&versionPrefix=3&metadataUrl=https://s01.oss.sonatype.org/content/repositories/releases/org/springframework/boot/spring-boot-dependencies/maven-metadata.xml"> |      |
-| Spring Boot Admin                       | 3.3.4    | <img src="https://img.shields.io/maven-metadata/v?label=&color=blue&versionPrefix=3&metadataUrl=https://repo1.maven.org/maven2/de/codecentric/spring-boot-admin-starter-server/maven-metadata.xml"> |      |
-| Spring Cloud                            | 2023.0.3 | <img src="https://img.shields.io/maven-metadata/v?label=&color=blue&versionPrefix=202&metadataUrl=https://s01.oss.sonatype.org/content/repositories/releases/org/springframework/cloud/spring-cloud-dependencies/maven-metadata.xml"> |      |
-| SprignDoc OpenAPI                       | 2.6.0    | <img src="https://img.shields.io/maven-metadata/v?label=&color=blue&metadataUrl=https://oss.sonatype.org/content/repositories/releases/org/springdoc/springdoc-openapi/maven-metadata.xml"> |      |
+| 技术选型                                    | 使用版本     | 最新版本                                                                                                                                                                                                                                  | 备注 |
+|-----------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----|
+| Java                                    | 21       | 23                                                                                                                                                                                                                                    |    |
+| Maven                                   | 3.9.9    | 3.9.9                                                                                                                                                                                                                                 |    |
+| PostgreSQL                              | 17       | 17                                                                                                                                                                                                                                    |    |
+| MongoDB                                 | 8        | 8.0.1                                                                                                                                                                                                                                 |    |
+| Rabbitmq                                | 4        | 4                                                                                                                                                                                                                                     |    |
+| Kafka                                   | 3.8      | 3.8                                                                                                                                                                                                                                   |    |
+| ActiveMQ                                | 6        |                                                                                                                                                                                                                                       |    |
+| Kubernetes                              | 1.31     |                                                                                                                                                                                                                                       |    |
+| Grafana (Prometheus/Grafana/Loki/Tempo) |          |                                                                                                                                                                                                                                       |    |
+| Spring Boot                             | 3.3.4    | <img src="https://img.shields.io/maven-metadata/v?label=&color=blue&versionPrefix=3&metadataUrl=https://s01.oss.sonatype.org/content/repositories/releases/org/springframework/boot/spring-boot-dependencies/maven-metadata.xml">     |    |
+| Spring Boot Admin                       | 3.3.4    | <img src="https://img.shields.io/maven-metadata/v?label=&color=blue&versionPrefix=3&metadataUrl=https://repo1.maven.org/maven2/de/codecentric/spring-boot-admin-starter-server/maven-metadata.xml">                                   |    |
+| Spring Cloud                            | 2023.0.3 | <img src="https://img.shields.io/maven-metadata/v?label=&color=blue&versionPrefix=202&metadataUrl=https://s01.oss.sonatype.org/content/repositories/releases/org/springframework/cloud/spring-cloud-dependencies/maven-metadata.xml"> |    |
+| SprignDoc OpenAPI                       | 2.6.0    | <img src="https://img.shields.io/maven-metadata/v?label=&color=blue&metadataUrl=https://oss.sonatype.org/content/repositories/releases/org/springdoc/springdoc-openapi/maven-metadata.xml">                                           |    |
 
 ## 应用架构
 
@@ -134,6 +134,11 @@ docker-compose up -d
 ### 使用 K8s 运行服务
 
 ## 参考资料
+
+### Idea 设置
+
+1. 设置 Maven 子模块的跟路径为当前模块的路径：修改 Idea ，在 Spring Boot Run/Debug Configuration Templates，设置 Working
+   Dictionary 为 `$ModuleFileDir$`。
 
 ### 开发环境准备
 

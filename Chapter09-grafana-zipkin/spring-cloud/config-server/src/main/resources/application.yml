@@ -11,7 +11,7 @@ spring.profiles.active: native
 #          default-label: main
 
 
-# Use the File System Backend to avoid git pulling. Enable "native" profile in the Config Server.
+# 需要启用 native profile。在 Idea 中， ${PWD} 可能指向的是项目跟路径，也可以通过 $MODULE_WORKING_DIR$ 设置为模块工作路径
 spring.cloud.config.server.native.searchLocations: file:${PWD}/config-repo,classpath:/config-repo
 
 logging:

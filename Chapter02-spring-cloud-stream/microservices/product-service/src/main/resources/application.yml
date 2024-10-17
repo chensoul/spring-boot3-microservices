@@ -1,5 +1,4 @@
-server:
-  port: 8060
+server.port: 8060
 
 spring.application.name: product-service
 

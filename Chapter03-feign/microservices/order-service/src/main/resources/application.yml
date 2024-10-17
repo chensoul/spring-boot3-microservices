@@ -1,5 +1,4 @@
-server:
-  port: 8040
+server.port: 8040
 
 spring.application.name: order-service
 

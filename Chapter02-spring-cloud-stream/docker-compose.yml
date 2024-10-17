@@ -23,8 +23,6 @@ services:
     image: chensoul/order-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - "8040:8080"
     depends_on:
       postgres:
         condition: service_healthy

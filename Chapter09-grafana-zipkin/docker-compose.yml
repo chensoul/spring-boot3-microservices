@@ -15,12 +15,12 @@ services:
       timeout: 5s
       retries: 10
 
-  eureka:
-    image: chensoul/eureka
+  eureka-server:
+    image: chensoul/eureka-server
     ports:
       - "8761:8761"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://eureka:8761" ]
+      test: [ "CMD", "curl", "-f", "http://eureka-server:8761" ]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -35,7 +35,7 @@ services:
     ports:
       - "8443:8443"
     depends_on:
-      eureka:
+      eureka-server:
         condition: service_healthy
 
   authorization:
@@ -63,8 +63,6 @@ services:
     image: chensoul/order-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - "8040:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -157,10 +155,6 @@ services:
       - --config.file=/etc/prometheus/prometheus.yml
     volumes:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    deploy:
-      resources:
-        limits:
-          memory: 256M
     ports:
       - "9090:9090"
 
@@ -170,22 +164,13 @@ services:
       - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./docker/grafana/dashboards:/var/lib/grafana/dashboards:ro
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=password
-    deploy:
-      resources:
-        limits:
-          memory: 256M
+      - GF_SECURITY_ADMIN_USER=user
+      - GF_SECURITY_ADMIN_PASSWORD=pass
     ports:
       - "3000:3000"
 
-
   zipkin:
     image: openzipkin/zipkin
-    deploy:
-      resources:
-        limits:
-          memory: 512M
     environment:
       - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
     ports:

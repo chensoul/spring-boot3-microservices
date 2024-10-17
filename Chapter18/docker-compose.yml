@@ -69,10 +69,6 @@ services:
 
   mongodb:
     image: mongo:8
-    deploy:
-      resources:
-        limits:
-          memory: 512M
     ports:
       - "27017:27017"
     environment:

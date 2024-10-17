@@ -1,5 +1,4 @@
-server:
-  port: 8040
+server.port: 8040
 
 spring.application.name: order-service
 
@@ -27,7 +26,6 @@ application:
     customer-url: http://localhost:8020/api/v1/customers
     payment-url: http://localhost:8050/api/v1/payments
     product-url: http://localhost:8060/api/v1/products
-    notification-url: http://localhost:8030/api/v1/notifications
 
 ---
 spring.config.activate.on-profile: docker
@@ -42,4 +40,3 @@ application:
     customer-url: http://customer-service:8080/api/v1/customers
     payment-url: http://payment-service:8080/api/v1/payments
     product-url: http://product-service:8080/api/v1/products
-    notification-url: http://notification-service:8080/api/v1/notifications

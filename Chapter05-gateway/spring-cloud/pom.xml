@@ -23,7 +23,7 @@
     </properties>
 
     <modules>
-        <module>eureka</module>
+        <module>eureka-server</module>
         <module>gateway</module>
     </modules>
 

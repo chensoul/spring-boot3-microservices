@@ -1,5 +1,4 @@
-server:
-  port: 8050
+server.port: 8050
 
 spring.application.name: payment-service
 
@@ -31,4 +30,4 @@ spring.datasource.url: jdbc:postgresql://postgres:5432/ecommerce
 
 spring.kafka.consumer.bootstrap-servers: kafka:9092
 
-eureka.client.serviceUrl.defaultZone: http://eureka:8761/eureka/
+eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka/

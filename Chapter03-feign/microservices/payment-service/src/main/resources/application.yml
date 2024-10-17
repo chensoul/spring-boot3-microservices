@@ -1,5 +1,4 @@
-server:
-  port: 8050
+server.port: 8050
 
 spring.application.name: payment-service
 
@@ -21,14 +20,6 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.type.mapping: paymentConfirmation:com.chensoul.ecommerce.payment.PaymentConfirmation
-
-
-application:
-  config:
-    product-url: http://localhost:8060/api/v1/products
-    notification-url: http://localhost:8030/api/v1/notifications
-
-
 
 ---
 spring.config.activate.on-profile: docker
