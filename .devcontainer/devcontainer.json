@@ -1,0 +1,29 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/java-postgres
+{
+  "name": "Spring ECommerce Microservices",
+  // Java Development Container Images https://mcr.microsoft.com/en-us/product/devcontainers/java/tags
+  "image": "mcr.microsoft.com/devcontainers/java:17-bullseye",
+  // Features list https://containers.dev/features
+  //  "features": {
+  //    "ghcr.io/devcontainers/features/java:1": {
+  //      "installMaven": "true",
+  //      "installGradle": "false"
+  //    },
+  //    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+  //  },
+  "customizations": {
+    "jetbrains": {
+      "backend": "IntelliJ"
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // This can be used to network with other containers or with the host.
+  "forwardPorts": [
+    8080,
+    8888,
+    8761
+  ],
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+}

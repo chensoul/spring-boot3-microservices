@@ -1,0 +1,35 @@
+server:
+  port: 8050
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ecommerce
+    username: user
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: paymentConfirmation:com.chensoul.ecommerce.payment.PaymentConfirmation
+
+
+---
+spring.config.activate.on-profile: docker
+
+server.port: 8080
+
+spring.datasource.url: jdbc:postgresql://postgres:5432/ecommerce
+
+spring.kafka.consumer.bootstrap-servers: kafka:9092
+
+eureka.client.serviceUrl.defaultZone: http://eureka:8761/eureka/
+
+management.zipkin.tracing.endpoint: http://zipkin:9411/api/v2/spans

@@ -1,0 +1,90 @@
+## AP优于CP
+
+分布式系统领域有个重要的CAP理论，该理论由加州大学伯克利分校的Eric Brewer教授提出，由麻省理工学院的Seth Gilbert和Nancy Lynch进行理论证明。该理论提到了分布式系统的CAP三个特性：
+
+- Consistency：数据一致性，即数据在存在多副本的情况下，可能由于网络、机器故障、软件系统等问题导致数据写入部分副本成功，部分副本失败，进而造成副本之间数据不一致，存在冲突。满足一致性则要求对数据的更新操作成功之后，多副本的数据保持一致。
+
+- Availability：在任何时候客户端对集群进行读写操作时，请求能够正常响应，即在一定的延时内完成。
+
+- Partition Tolerance：分区容忍性，即发生通信故障的时候，整个集群被分割为多个无法相互通信的分区时，集群仍然可用。
+
+对于分布式系统来说，一般网络条件相对不可控，出现网络分区是不可避免的，因此系统必须具备分区容忍性。在这个前提下分布式系统的设计则在AP及CP之间进行选择。不过不能理解为CAP三者之间必须三选二，它们三者之间不是对等和可以相互替换的。在分布式系统领域，P是一个客观存在的事实，不可绕过，所以P与AC之间不是对等关系。
+
+对于ZooKeeper，它是"C"P的，之所以C加引号是因为ZooKeeper默认并不是严格的强一致，比如客户端A提交一个写操作，ZooKeeper在过半数节点操作成功之后就返回，此时假设客户端B的读操作请求到的是A写操作尚未同步到的节点，那么读取到的就不是客户端A写操作成功之后的数据。如果在使用的时候需要强一致，则需要在读取数据的时候先执行一下sync操作，即与leader节点先同步下数据，这样才能保证强一致。在极端的情况下发生网络分区的时候，如果leader节点不在non-quorum分区，那么对这个分区上节点的读写请求将会报错，无法满足Availability特性。
+
+Eureka是在部署在AWS的背景下设计的，其设计者认为，在云端，特别是在大规模部署的情况下，失败是不可避免的，可能因为Eureka自身部署失败，注册的服务不可用，或者由于网络分区导致服务不可用，因此不能回避这个问题。要拥抱这个问题，就需要Eureka在网络分区的时候，还能够正常提供服务注册及发现功能，因此Eureka选择满足Availability这个特性。Peter Kelley在 [Eureka! Why You Shouldn't Use ZooKeeper for Service Discovery](http://medium.com/knerd/eureka-why-you-shouldnt-use-zookeeper-for-service-discovery-4932c5c7e764) 一文中指出，在实际生产实践中，服务注册及发现中心保留可用及过期的数据总比丢失掉可用的数据好。这样的话，应用实例的注册信息在集群的所有节点间并不是强一致的，这就需要客户端能够支持负载均衡及失败重试。在Netflix的生态中，由 Ribbon 提供这个功能。
+
+## Peer to Peer架构
+
+一般而言，分布式系统的数据在多个副本之间的复制方式，可分为主从复制和对等复制。
+
+1．主从复制
+
+主从复制也就是广为人知的Master-Slave模式，即有一个主副本，其他副本为从副本。所有对数据的写操作都提交到主副本，最后再由主副本更新到其他从副本。具体更新的方式，还可以细分为同步更新、异步更新、同步及异步混合。
+
+对于主从复制模式来讲，写操作的压力都在主副本上，它是整个系统的瓶颈，但是从副本可以帮主副本分担读请求。
+
+2．对等复制
+
+即Peer to Peer的模式，副本之间不分主从，任何副本都可以接收写操作，然后每个副本之间相互进行数据更新。
+
+对于对等复制模式来讲，由于任何副本都可以接收写操作请求，不存在写操作压力瓶颈。但是由于每个副本都可以进行写操作处理，各个副本之间的数据同步及冲突处理是一个比较棘手的问题。
+
+Eureka Server采用的就是Peer to Peer的复制模式。这里我们分为客户端及服务端两个角度来阐述。
+
+客户端：
+
+Client端一般通过如下配置Eureka Server的peer节点：
+
+```yaml
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http:/localhost:8761/eureka/,http:/localhost:8762/eureka/
+```
+
+实际代码里支持preferSameZoneEureka，即有多个分区的话，优先选择与应用实例所在分区一样的其他服务的实例，如果没找到则默认使用defaultZone。客户端使用quarantineSet维护了一个不可用的Eureka Server列表，进行请求的时候，优先从可用的列表中进行选择，如果请求失败则切换到下一个Eureka Server进行重试，重试次数默认为3。
+
+另外为了防止每个Client端都按配置文件指定的顺序进行请求造成Eureka Server节点请求分布不均衡的情况，Client端有个定时任务（默认5分钟执行一次）来刷新并随机化Eureka Server的列表。
+
+服务端：
+
+Eureka Server本身依赖了Eureka Client，也就是每个Eureka Server是作为其他Eureka Server的Client。在单个Eureka Server启动的时候，会有一个syncUp的操作，通过Eureka Client请求其他Eureka Server节点中的一个节点获取注册的应用实例信息，然后复制到其他peer节点。
+
+Eureka Server在执行复制操作的时候，使用HEADER_REPLICATION的http header来将这个请求操作与普通应用实例的正常请求操作区分开来。通过HEADER_REPLICATION来标识是复制请求，这样其他peer节点接收到请求的时候，就不会再对它的peer节点进行复制操作，从而避免死循环。
+
+Eureka Server由于采用了Peer to peer的复制模式，其重点要解决的另外一个问题就是数据复制的冲突问题。针对这个问题，Eureka采用如下两个方式来解决：
+
+- lastDirtyTimestamp标识
+-  heartbeat
+
+针对数据的不一致，一般是通过版本号机制来解决，最后在不同副本之间只需要判断请求复制数据的版本号与本地数据的版本号高低就可以了。Eureka没有直接使用版本号的属性，而是采用一个叫作lastDirtyTimestamp的字段来对比。
+
+如果开启SyncWhenTimestampDiffers配置（默认开启），当lastDirtyTimestamp不为空的时候，就会进行相应的处理：
+
+- 如果请求参数的lastDirtyTimestamp值大于Server本地该实例的lastDirtyTimestamp值，则表示Eureka Server之间的数据出现冲突，这个时候就返回404，要求应用实例重新进行register操作。
+- 如果请求参数的lastDirtyTimestamp值小于Server本地该实例的lastDirtyTimestamp值，如果是peer节点的复制请求，则表示数据出现冲突，返回409给peer节点，要求其同步自己最新的数据信息。
+
+peer节点之间的相互复制并不能保证所有操作都能够成功，因此Eureka还通过应用实例与Server之间的heartbeat也就是renewLease操作来进行数据的最终修复，即如果发现应用实例数据与某个Server的数据出现不一致，则Server返回404，应用实例重新进行register操作。
+
+##  Zone及Region设计
+
+由于Netflix的服务大部分在Amazon上，因此Eureka的设计有一部分也是基于Amazon的Zone及Region的基础设施之上。
+
+在Amazon EC2托管在全球的各个地方，它用Region来代表一个独立的地理区域，比如Eureka Server默认设置了4个Region:us-east-1、us-west-1、us-west-2、eu-west-1。
+
+在每个Region下面，还分了多个AvailabilityZone，一个Region对应多个AvailabilityZone。每个Region之间是相互独立及隔离的，默认情况下资源只在单个Region之间的Availability-Zone进行复制，跨Region之间不会进行资源复制。
+
+AvailabilityZone就类似Region下面的子Region，比如us-east-1的Region可分为us-east-1a、us-east-1c、us-east-1d、us-east-1e这几个AvailabilityZone。AvailabilityZone可看作Region下面的一个个机房，各个机房相对独立，主要是为了Region的高可用设计，当同一个Region下面的AvailabilityZone不可用时，还有其他AvailabilityZone可用。
+
+Eureka Server原生支持了Region及AvailabilityZone，由于资源在Region之间默认是不会复制的，因此Eureka Server的高可用主要就在于Region下面的AvailabilityZone。
+
+Eureka Client支持preferSameZone，也就是获取Eureka Server的serviceUrl优先拉取跟应用实例同处于一个AvailabilityZone的Eureka Server地址列表。一个AvailabilityZone可以设置多个Eureka Server实例，它们之间构成peer节点，然后采用Peer to Peer的复制模式。
+
+Netflix的Ribbon组件针对多个AvailabilityZone提供了ZoneAffinity的支持，允许在客户端路由或网关路由时，优先选取与自身实例处于同一个AvailabilityZone的服务实例。
+
+## 自我保护模式
+
+在分布式系统设计里头，通常需要对应用实例的存活进行健康检查，这里比较关键的问题就是要处理好网络偶尔抖动或短暂不可用时造成的误判。另外Eureka Server端与Client端之间如果出现网络分区问题，在极端情况下可能会使得Eureka Server清空部分服务的实例列表，这个将严重影响到Eureka Server的Availability属性。因此Eureka Server引入了SELF PRESERVATION机制。
+
+Eureka Client端与Server端之间有个租约，Client要定时发送心跳来维持这个租约，表示自己还存活着。Eureka通过当前注册的实例数，去计算每分钟应该从应用实例接收到的心跳数，如果最近一分钟接收到的续约的次数小于等于指定阈值的话，则关闭租约失效剔除，禁止定时任务剔除失效的实例，从而保护注册信息。

@@ -1,0 +1,31 @@
+server:
+  port: 8060
+
+spring.application.name: product-service
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ecommerce
+    username: user
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 0
+  sql:
+    init:
+      mode: always
+
+---
+spring.config.activate.on-profile: docker
+
+server.port: 8080
+
+spring.datasource.url: jdbc:postgresql://postgres:5432/ecommerce
+
+eureka.client.serviceUrl.defaultZone: http://eureka:8761/eureka/

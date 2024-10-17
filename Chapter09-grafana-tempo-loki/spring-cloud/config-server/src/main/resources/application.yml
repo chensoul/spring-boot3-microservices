@@ -1,0 +1,25 @@
+server.port: 8888
+
+spring.profiles.active: native
+
+#spring:
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/spring-petclinic/spring-petclinic-microservices-config
+#          default-label: main
+
+
+# Use the File System Backend to avoid git pulling. Enable "native" profile in the Config Server.
+spring.cloud.config.server.native.searchLocations: file:${PWD}/config-repo,classpath:/config-repo
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud: TRACE
+
+---
+spring.config.activate.on-profile: docker
+
+spring.cloud.config.server.native.searchLocations: file:/config-repo

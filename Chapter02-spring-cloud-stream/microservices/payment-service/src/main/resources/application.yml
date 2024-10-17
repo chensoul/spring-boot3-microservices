@@ -1,0 +1,76 @@
+server:
+  port: 8050
+
+spring.application.name: payment-service
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ecommerce
+    username: user
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+spring.cloud.stream:
+  defaultBinder: rabbit
+  default.contentType: application/json
+  bindings:
+    notification-out-0:
+      destination: notification
+      producer:
+        required-groups: auditGroup
+
+spring.cloud.stream.kafka.binder:
+  brokers: 127.0.0.1
+  defaultBrokerPort: 9092
+
+spring.rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: guest
+  password: guest
+
+
+application:
+  config:
+    product-url: http://localhost:8060/api/v1/products
+    notification-url: http://localhost:8030/api/v1/notifications
+
+---
+spring.config.activate.on-profile: docker
+
+server.port: 8080
+
+spring.datasource.url: jdbc:postgresql://postgres:5432/ecommerce
+
+spring.rabbitmq.host: rabbitmq
+
+spring.cloud.stream.kafka.binder.brokers: kafka
+
+application:
+  config:
+    customer-url: http://customer-service:8080/api/v1/customers
+    payment-url: http://payment-service:8080/api/v1/payments
+    product-url: http://product-service:8080/api/v1/products
+    notification-url: http://notification-service:8080/api/v1/notifications
+
+
+
+---
+spring.config.activate.on-profile: streaming_partitioned
+
+spring.cloud.stream.bindings.notification-out-0.producer:
+  partition-key-expression: headers['partitionKey']
+  partition-count: 2
+
+---
+spring.config.activate.on-profile: kafka
+
+management.health.rabbit.enabled: false
+spring.cloud.stream.defaultBinder: kafka
+spring.kafka.bootstrap-servers: kafka:9092
+spring.cloud.stream.kafka.binder.replication-factor: 1
