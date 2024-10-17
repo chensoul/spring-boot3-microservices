@@ -68,8 +68,7 @@ services:
         condition: service_healthy
 
   mongodb:
-    image: mongo:7
-    restart: always
+    image: mongo:8
     ports:
       - "27017:27017"
     environment:
@@ -83,7 +82,6 @@ services:
 
   mysql:
     image: mysql:8
-    restart: always
     ports:
       - "3306:3306"
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -100,7 +98,6 @@ services:
 
   rabbitmq:
     image: rabbitmq:4-management-alpine
-    restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -146,6 +143,5 @@ services:
 
   jaeger-collector.istio-system:
     image: openzipkin/zipkin
-    restart: always
     ports:
       - "9411:9411"

@@ -3,7 +3,6 @@ name: ecommerce
 services:
   customer-service:
     image: chensoul/customer-service
-    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -12,7 +11,6 @@ services:
 
   notification-service:
     image: chensoul/notification-service
-    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -21,7 +19,6 @@ services:
 
   order-service:
     image: chensoul/order-service
-    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     ports:
@@ -32,7 +29,6 @@ services:
 
   payment-service:
     image: chensoul/payment-service
-    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -41,7 +37,6 @@ services:
 
   product-service:
     image: chensoul/product-service
-    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -65,21 +60,10 @@ services:
       timeout: 5s
       retries: 10
 
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    ports:
-      - "5050:80"
-
   mongodb:
-    image: mongo
+    image: mongo:8
     ports:
       - "27017:27017"
-    volumes:
-      - mongo:/data
     environment:
       MONGO_INITDB_DATABASE: ecommerce
       MONGO_INITDB_ROOT_USERNAME: user
@@ -90,16 +74,6 @@ services:
       timeout: 2s
       retries: 10
   
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - "8081:8081"
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: user
-      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
-      ME_CONFIG_MONGODB_SERVER: mongodb
-
   maildev:
     image: maildev/maildev
     environment:

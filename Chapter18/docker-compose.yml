@@ -68,8 +68,11 @@ services:
         condition: service_healthy
 
   mongodb:
-    image: mongo:7
-    restart: always
+    image: mongo:8
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     ports:
       - "27017:27017"
     environment:
@@ -83,7 +86,6 @@ services:
 
   mysql:
     image: mysql:8
-    restart: always
     ports:
       - "3306:3306"
     environment:
@@ -99,7 +101,6 @@ services:
 
   rabbitmq:
     image: rabbitmq:4-management-alpine
-    restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -145,6 +146,5 @@ services:
 
   jaeger-collector.istio-system:
     image: openzipkin/zipkin
-    restart: always
     ports:
       - "9411:9411"

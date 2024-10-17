@@ -107,7 +107,7 @@ services:
         condition: service_healthy
 
   mongodb:
-    image: mongo:7
+    image: mongo:8
     ports:
       - "27017:27017"
     environment:
@@ -136,7 +136,6 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.7.1
-    restart: always
     ports:
       - "9092:9092"
     environment:
@@ -149,7 +148,6 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.7.1
-    restart: always
     ports:
       - "2181:2181"
     environment:
@@ -184,6 +182,5 @@ services:
 
   zipkin:
     image: openzipkin/zipkin
-    restart: always
     ports:
       - "9411:9411"

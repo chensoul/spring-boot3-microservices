@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: admin-server
+  config:
+    import: optional:configserver:http://localhost:8888/
+
+---
+spring.config.activate.on-profile: docker
+
+spring.config.import: configserver:http://config-server:8888
