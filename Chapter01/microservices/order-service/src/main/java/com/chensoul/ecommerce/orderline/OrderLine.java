@@ -25,18 +25,18 @@ import org.springframework.data.annotation.Version;
 @Table(name = "customer_order_line")
 public class OrderLine {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Version
-  private Integer version;
+    @Version
+    private Integer version;
 
-  @ManyToOne
-  @JoinColumn(name = "order_id")
-  private Order order;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-  private Integer productId;
+    private Integer productId;
 
-  private Long quantity;
+    private Long quantity;
 }

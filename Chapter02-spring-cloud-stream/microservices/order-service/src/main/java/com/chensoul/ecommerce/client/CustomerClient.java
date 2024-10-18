@@ -1,7 +1,9 @@
 package com.chensoul.ecommerce.client;
 
 import com.chensoul.ecommerce.customer.CustomerResponse;
-import com.chensoul.ecommerce.exception.BusinessException;
+import com.chensoul.exception.BusinessException
+
+    ;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,25 +19,25 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @RequiredArgsConstructor
 public class CustomerClient {
-  private final RestTemplate restTemplate;
-  @Value("${application.config.customer-url}")
-  private String customerUrl;
+    private final RestTemplate restTemplate;
+    @Value("${application.config.customer-url}")
+    private String customerUrl;
 
-  public Optional<CustomerResponse> findCustomerById(String customerId) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.set(CONTENT_TYPE, APPLICATION_JSON_VALUE);
+    public Optional<CustomerResponse> findCustomerById(String customerId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(CONTENT_TYPE, APPLICATION_JSON_VALUE);
 
-    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-    ResponseEntity<CustomerResponse> responseEntity = restTemplate.exchange(
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<CustomerResponse> responseEntity = restTemplate.exchange(
             customerUrl + "/" + customerId,
             GET,
             requestEntity,
             CustomerResponse.class
-    );
+        );
 
-    if (responseEntity.getStatusCode().isError()) {
-      throw new BusinessException("An error occurred while processing the customer request: " + responseEntity.getStatusCode());
+        if (responseEntity.getStatusCode().isError()) {
+            throw new BusinessException("An error occurred while processing the customer request: " + responseEntity.getStatusCode());
+        }
+        return Optional.ofNullable(responseEntity.getBody());
     }
-    return Optional.ofNullable(responseEntity.getBody());
-  }
 }

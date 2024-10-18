@@ -1,3 +1,9 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
 server.port: 8050
 
 spring:
@@ -25,10 +31,13 @@ spring.config.activate.on-profile: docker
 
 server.port: 8080
 
+# docker容器中用户无法创建路径，故使用/tmp/logs
+logging.file.path: /tmp/logs/${spring.application.name}
+
 spring.datasource.url: jdbc:postgresql://postgres:5432/ecommerce
 
 spring.kafka.consumer.bootstrap-servers: kafka:9092
 
 eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka/
 
-loki.url: http://loki:3100/loki/api/v1/push
+logging.loki.url: http://loki:3100/loki/api/v1/push

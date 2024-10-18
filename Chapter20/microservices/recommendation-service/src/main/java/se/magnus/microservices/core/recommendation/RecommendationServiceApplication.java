@@ -23,20 +23,20 @@ import com.chensoul.ecommerce.core.recommendation.persistence.RecommendationEnti
 public class RecommendationServiceApplication {
 
 
-  @Autowired
-  MongoOperations mongoTemplate;
+    @Autowired
+    MongoOperations mongoTemplate;
 
-  public static void main(String[] args) {
-    SpringApplication.run(RecommendationServiceApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(RecommendationServiceApplication.class, args);
+    }
 
-  @EventListener(ContextRefreshedEvent.class)
-  public void initIndicesAfterStartup() {
+    @EventListener(ContextRefreshedEvent.class)
+    public void initIndicesAfterStartup() {
 
-    MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
-    IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
+        MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
+        IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
 
-    IndexOperations indexOps = mongoTemplate.indexOps(RecommendationEntity.class);
-    resolver.resolveIndexFor(RecommendationEntity.class).forEach(e -> indexOps.ensureIndex(e));
-  }
+        IndexOperations indexOps = mongoTemplate.indexOps(RecommendationEntity.class);
+        resolver.resolveIndexFor(RecommendationEntity.class).forEach(indexOps::ensureIndex);
+    }
 }

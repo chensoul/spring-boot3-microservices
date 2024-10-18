@@ -16,7 +16,7 @@ springdoc:
     authorizationUrl: https://localhost:8443/oauth2/authorize
     tokenUrl: https://localhost:8443/oauth2/token
 
-server.forward-headers-strategy: framework
+
 
 api:
 
@@ -34,6 +34,12 @@ api:
       name: NAME OF CONTACT
       url: URL TO CONTACT
       email: contact@mail.com
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
 
 server.port: 7777
 server.error.include-message: always
@@ -102,6 +108,12 @@ logging:
 
 ---
 spring.config.activate.on-profile: docker
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
 
 server.port: 80
 

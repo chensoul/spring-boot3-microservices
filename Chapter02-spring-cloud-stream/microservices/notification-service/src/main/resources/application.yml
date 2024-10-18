@@ -1,6 +1,14 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
 server.port: 8030
 
 spring.application.name: notification-service
+
+spring.main.allow-bean-definition-overriding: true
 
 spring:
   data:
@@ -64,6 +72,9 @@ spring.config.activate.on-profile: docker
 
 server.port: 8080
 
+# docker容器中用户无法创建路径，故使用/tmp/logs
+logging.file.path: /tmp/logs/${spring.application.name}
+
 spring.data.mongodb.host: mongodb
 
 spring.mail.host: maildev
@@ -71,8 +82,6 @@ spring.mail.host: maildev
 spring.rabbitmq.host: rabbitmq
 
 spring.cloud.stream.kafka.binder.brokers: kafka
-
-
 
 ---
 spring.config.activate.on-profile: streaming_partitioned
@@ -95,6 +104,9 @@ spring.cloud.stream.bindings.messageProcessor-in-0.consumer.instanceIndex: 1
 spring.config.activate.on-profile: kafka
 
 management.health.rabbit.enabled: false
+
 spring.cloud.stream.defaultBinder: kafka
+
 spring.kafka.bootstrap-servers: kafka:9092
+
 spring.cloud.stream.kafka.binder.replication-factor: 1

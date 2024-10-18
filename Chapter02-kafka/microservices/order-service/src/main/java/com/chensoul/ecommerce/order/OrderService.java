@@ -4,7 +4,6 @@ import com.chensoul.ecommerce.client.CustomerClient;
 import com.chensoul.ecommerce.client.PaymentClient;
 import com.chensoul.ecommerce.client.ProductClient;
 import com.chensoul.ecommerce.customer.CustomerResponse;
-import com.chensoul.ecommerce.exception.BusinessException;
 import com.chensoul.ecommerce.orderline.OrderLineRepository;
 import com.chensoul.ecommerce.orderline.OrderLineRequest;
 import com.chensoul.ecommerce.orderline.OrderLineService;
@@ -12,9 +11,9 @@ import com.chensoul.ecommerce.payment.PaymentRequest;
 import com.chensoul.ecommerce.producer.OrderProducer;
 import com.chensoul.ecommerce.product.ProductPurchaseRequest;
 import com.chensoul.ecommerce.product.ProductPurchaseResponse;
+import com.chensoul.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +74,7 @@ public class OrderService {
         return this.repository.findAll()
             .stream()
             .map(this.mapper::fromOrder)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public OrderResponse findById(Integer id) {

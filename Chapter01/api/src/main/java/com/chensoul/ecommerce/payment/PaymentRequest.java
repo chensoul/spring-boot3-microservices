@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record PaymentRequest(
-        Integer id,
-        Integer orderId,
-        BigDecimal amount,
-        PaymentMethod paymentMethod,
-        CustomerResponse customerResponse
+    Integer id,
+    Integer orderId,
+    BigDecimal amount,
+    PaymentMethod paymentMethod,
+    CustomerResponse customerResponse
 ) {
 }

@@ -7,10 +7,10 @@ import java.math.BigDecimal;
 
 @JsonInclude(Include.NON_EMPTY)
 public record OrderResponse(
-        Integer id,
-        BigDecimal amount,
-        PaymentMethod paymentMethod,
-        String customerId
+    Integer id,
+    BigDecimal amount,
+    PaymentMethod paymentMethod,
+    String customerId
 ) {
 
 }

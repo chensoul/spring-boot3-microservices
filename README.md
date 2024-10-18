@@ -5,15 +5,11 @@
 
 该项目是一个电商的[微服务](http://www.martinfowler.com/articles/microservices.html)
 项目，最初源自 [Mastering Microservices: Spring boot, Spring Cloud and Keycloak In 7 Hours](Mastering
-Microservices: Spring boot, Spring Cloud and Keycloak In 7 Hours)，在参考了多个微服务项目之后做了一些优化和改进。整个微服务项目使用的技术栈包括
-Spring Cloud
-Gateway、Spring Cloud Circuit
-Breaker、Spring Cloud Config、Spring Cloud Netflix Eureka、Micrometer Tracing、Resilience4j、Open Telemetry、Istio、 Kubernetes
-等等。
+Microservices: Spring boot, Spring Cloud and Keycloak In 7 Hours)，在参考了多个微服务项目之后做了一些优化和改进。
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/spring-petclinic/spring-petclinic-microservices)
 
-## 微服务概述
+## 概述
 
 该项目由几个微服务组成：
 
@@ -72,75 +68,25 @@ Breaker、Spring Cloud Config、Spring Cloud Netflix Eureka、Micrometer Tracing
 - Chapter00：Docker
 - Chapter01：Restful接口、持久化、SpringDoc OpenAPI
 - Chapter02：异步通信
-    - Chapter02-activemq
-    - Chapter02-kafka
-    - Chapter02-rabbitmq
-    - Chapter02-spring-cloud-stream
+  - Chapter02-activemq
+  - Chapter02-kafka
+  - Chapter02-rabbitmq
+  - Chapter02-spring-cloud-stream
 - Chapter03：OpenFeign
 - Chapter04：服务发现 Eureka
 - Chapter05：服务网关 Spring Cloud Gateway
-- Chapter06：认证服务 Spring Security OAuth2
-- Chapter07：配置服务 Spring Cloud Config
-- Chapter08：监控服务 Spring Boot Admin
-- chapter09: 链路追踪 Micrometer、Grafana、Prometheus、Zipkin
-- chapter10: 链路追踪 Micrometer、Grafana、Prometheus、Tempo、Loki
+- Chapter06：配置服务 Spring Cloud Config
+- Chapter07：监控服务 Spring Boot Admin
+- chapter08: 链路追踪 Zipkin
+- chapter09: 监控 Micrometer、Grafana
+- chapter10: 监控 Micrometer、Grafana、Tempo、Loki
 - chapter11: 混沌工程 Chaos Engineering
-- chapter12: Kubernetes
+- chapter12: 认证服务 Spring Security OAuth2
 - chapter13: Service Mesh
 - chapter13: EFK
 - chapter14: Native
 
-## 快速运行
-
-### 本地运行服务
-
-1、启动 postgres 和 mongodb
-
-```bash
-cd Chapter01
-docker-compose up postgres mongodb -d
-```
-
-2、启动应用
-
-```bash
-mvn clean -DskipTests spring-boot:run
-```
-
-### 使用 Docker 运行服务
-
-1. 使用 spring-boot 构建镜像
-
-```shell
-cd Chapter01 
-mvn spring-boot:build-image -DskipTests
-```
-
-如果想将镜像推送到 docker hub，运行下面命令：
-
-```shell
-mvn spring-boot:build-image -DskipTests \
-  -Ddocker.publishRegistry.username=user \
-  -Ddocker.publishRegistry.password=secret \
-  -Dspring-boot.build-image.publish=true
-```
-
-运行服务
-
-```shell
-docker-compose up -d
-```
-
-### 使用 K8s 运行服务
-
-## 参考资料
-
-### Idea 设置
-
-1. 设置 Maven 子模块的跟路径为当前模块的路径：修改 Idea ，在 Spring Boot Run/Debug Configuration Templates，设置 Working
-   Dictionary 为 `$ModuleFileDir$`。
-
-### 开发环境准备
+## 环境准备
 
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://docs.docker.com/get-docker/)
@@ -191,6 +137,101 @@ minikube version | grep "minikube" && \
 istioctl version --remote=false
 ```
 
+## 项目构建
+
+首先进入Chaptero1，如何依次运行下面命令构建 api、framework 模块
+
+```bash
+cd Chapter01
+
+cd api && mvn install -DskipTests && cd ..
+cd framework && mvn install -DskipTests && cd ..
+```
+
+然后，进入某个章节，编译 microservices
+
+```bash
+cd Chapter01/microservices
+mvn clean install
+```
+
+缓存依赖
+
+```bash
+mvn dependency:go-offline
+```
+
+生成 JavaDoc
+
+```bash
+mvn -ntp javadoc:javadoc --batch-mode
+```
+
+## 测试
+
+### 本地运行服务
+
+通过 Spring Boot Maven 插件运行服务
+
+```bash
+mvn clean spring-boot:run -DskipTests
+```
+
+也可以使用调试模型运行
+
+```bash
+mvn spring-boot:run -DskipTests -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
+```
+
+### 使用 Docker 运行服务
+
+在某个章节的 microservices 目录下面，使用 Maven 插件构建镜像。
+
+```bash
+cd Chapter01/microservices
+mvn -ntp spring-boot:build-image -DskipTests
+```
+
+如果想将镜像推送到 docker hub，运行下面命令：
+
+```bash
+mvn spring-boot:build-image -DskipTests \
+  -Ddocker.publishRegistry.username=user \
+  -Ddocker.publishRegistry.password=secret \
+  -Dspring-boot.build-image.publish=true
+```
+
+在某个章节的根目录下使用 docker 启动服务：
+
+```bash
+cd Chapter01
+docker-compose -f app.yml up -d
+```
+
+### 使用 K8s 运行服务
+
+### 使用 Sonar 检测代码质量
+
+你可以使用以下命令启动本地 Sonar 服务器（可通过[http://localhost:9001](http://localhost:9001/)访问）：
+
+```bash
+cd Chapter01
+docker compose -f sonar.yml up -d
+```
+
+注意：我们已经关闭了 sonar.yml 中 UI 的强制身份验证重定向，以便在尝试 SonarQube 时获得开箱即用的体验，对于实际用例，请将其重新打开。
+
+然后，运行 Sonar 分析：
+
+```bash
+cd microservices
+mvn clean verify -DskipTests sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
+```
+
+> Sonar 默认的用户名和密码为 admin/admin，如果你修改了密码，请使用新密码。
+
+## 参考
+
 ### 视频
 
 以下是介绍微服务项目的视频：
@@ -205,10 +246,10 @@ istioctl version --remote=false
 以下是 github 上微服务项目源代码：
 
 - https://github.com/chensoul/Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
-
 - https://github.com/chensoul/spring-petclinic-microservices
 - https://github.com/chensoul/spring-boot-microservices
 - https://github.com/chensoul/spring-boot-3-microservices-course
 - https://github.com/in28minutes/spring-microservices-v3
 - https://github.com/ali-bouali/microservices-full-code
 
+- https://github.com/jhipster/jhipster-lite

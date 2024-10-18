@@ -7,25 +7,25 @@ import lombok.Data;
 
 @Data
 public class Event<K, T> {
-  private Type eventType;
-  private K key;
-  private T data;
+    private Type eventType;
+    private K key;
+    private T data;
 
-  @JsonSerialize(using = ZonedDateTimeSerializer.class)
-  private ZonedDateTime eventCreatedAt;
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
+    private ZonedDateTime eventCreatedAt;
 
-  public Event() {
-  }
+    public Event() {
+    }
 
-  public Event(Type eventType, K key, T data) {
-    this.eventType = eventType;
-    this.key = key;
-    this.data = data;
-    this.eventCreatedAt = ZonedDateTime.now();
-  }
+    public Event(Type eventType, K key, T data) {
+        this.eventType = eventType;
+        this.key = key;
+        this.data = data;
+        this.eventCreatedAt = ZonedDateTime.now();
+    }
 
-  public enum Type {
-    ORDER,
-    PAYMENT
-  }
+    public enum Type {
+        ORDER,
+        PAYMENT
+    }
 }

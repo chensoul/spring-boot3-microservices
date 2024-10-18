@@ -14,22 +14,20 @@ import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentProperty;
 
 /**
- * TODO Comment
- *
  * @author <a href="mailto:ichensoul@gmail.com">chensoul</a>
- * @since TODO
+ * @since
  */
 @RequiredArgsConstructor
 @Configuration
 public class MongodbConfig {
-  final MongoOperations mongoTemplate;
+    final MongoOperations mongoTemplate;
 
-  @EventListener(ContextRefreshedEvent.class)
-  public void initIndicesAfterStartup() {
-    MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
-    IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
+    @EventListener(ContextRefreshedEvent.class)
+    public void initIndicesAfterStartup() {
+        MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
+        IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
 
-    IndexOperations indexOps = mongoTemplate.indexOps(Notification.class);
-    resolver.resolveIndexFor(Notification.class).forEach(e -> indexOps.ensureIndex(e));
-  }
+        IndexOperations indexOps = mongoTemplate.indexOps(Notification.class);
+        resolver.resolveIndexFor(Notification.class).forEach(indexOps::ensureIndex);
+    }
 }

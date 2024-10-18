@@ -1,0 +1,30 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+server.port: 8020
+
+spring:
+  data:
+    mongodb:
+      username: user
+      password: pass
+      host: localhost
+      port: 27017
+      database: ecommerce
+      authentication-database: admin
+
+---
+spring.config.activate.on-profile: docker
+
+server.port: 8080
+
+# docker容器中用户无法创建路径，故使用/tmp/logs
+logging.file.path: /tmp/logs/${spring.application.name}
+
+spring.data.mongodb.host: mongodb
+
+eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka/
+

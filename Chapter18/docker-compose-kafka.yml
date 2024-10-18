@@ -2,6 +2,7 @@ services:
   product:
     image: chensoul/product-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/product.yml
       - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
@@ -18,6 +19,7 @@ services:
   product-p1:
     image: chensoul/product-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/product.yml
       - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
@@ -34,6 +36,7 @@ services:
   recommendation:
     image: chensoul/recommendation-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/recommendation.yml
       - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
@@ -50,6 +53,7 @@ services:
   recommendation-p1:
     image: chensoul/recommendation-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/recommendation.yml
       - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
@@ -66,6 +70,7 @@ services:
   review:
     image: chensoul/review-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/review.yml
       - SPRING_DATASOURCE_USERNAME=${MYSQL_USR}
@@ -80,8 +85,9 @@ services:
 
   review-p1:
     image: chensoul/review-service
-    
+
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/review.yml
       - SPRING_DATASOURCE_USERNAME=${MYSQL_USR}
@@ -97,6 +103,7 @@ services:
   product-composite:
     image: chensoul/product-composite-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,kafka
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/product-composite.yml
     volumes:
@@ -157,13 +164,14 @@ services:
   gateway:
     image: chensoul/gateway
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/gateway.yml
       - SPRING_SSL_BUNDLE_JKS_GATEWAY_KEYSTORE_PASSWORD=${GATEWAY_TLS_PWD}
     volumes:
       - ./config-repo:/config-repo
     ports:
-      - "8443:8443"
+      - "8080:8080"
     depends_on:
       authorization:
         condition: service_healthy
@@ -171,6 +179,7 @@ services:
   authorization:
     image: chensoul/authorization-server
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/authorization.yml
     volumes:

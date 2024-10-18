@@ -13,15 +13,15 @@ import java.util.List;
 
 @JsonInclude(Include.NON_EMPTY)
 public record OrderRequest(
-        Integer id,
-        @Positive(message = "Order amount should be positive")
-        BigDecimal totalAmount,
-        @NotNull(message = "Payment method should be precised")
-        PaymentMethod paymentMethod,
-        @NotBlank(message = "Customer should be present")
-        String customerId,
-        @NotEmpty(message = "You should at least purchase one product")
-        List<ProductPurchaseRequest> products
+    Integer id,
+    @Positive(message = "Order amount should be positive")
+    BigDecimal totalAmount,
+    @NotNull(message = "Payment method should be precised")
+    PaymentMethod paymentMethod,
+    @NotBlank(message = "Customer should be present")
+    String customerId,
+    @NotEmpty(message = "You should at least purchase one product")
+    List<ProductPurchaseRequest> products
 ) {
 
 }

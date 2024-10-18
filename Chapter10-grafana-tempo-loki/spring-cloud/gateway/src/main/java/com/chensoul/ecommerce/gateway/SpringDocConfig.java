@@ -17,36 +17,36 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocConfig {
 
-  /**
-   * 动态配置 swagger 路由
-   *
-   * @param swaggerUiConfigProperties
-   * @param locator
-   * @return
-   */
-  @Bean("swaggerRouteRefreshListener")
-  public ApplicationListener<RefreshRoutesEvent> routeRefreshListener(SwaggerUiConfigProperties swaggerUiConfigProperties, RouteDefinitionLocator locator) {
-    return new ApplicationListener<RefreshRoutesEvent>() {
-      @Override
-      public void onApplicationEvent(RefreshRoutesEvent event) {
-        locator.getRouteDefinitions().collectList().subscribe(definitions -> {
-          List<RouteDefinition> routeDefinitions = definitions.stream().filter(routeDefinition -> routeDefinition.getId().matches(".*-service")).collect(Collectors.toList());
+    /**
+     * 动态配置 swagger 路由
+     *
+     * @param swaggerUiConfigProperties
+     * @param locator
+     * @return
+     */
+    @Bean("swaggerRouteRefreshListener")
+    public ApplicationListener<RefreshRoutesEvent> routeRefreshListener(SwaggerUiConfigProperties swaggerUiConfigProperties, RouteDefinitionLocator locator) {
+        return new ApplicationListener<RefreshRoutesEvent>() {
+            @Override
+            public void onApplicationEvent(RefreshRoutesEvent event) {
+                locator.getRouteDefinitions().collectList().subscribe(definitions -> {
+                    List<RouteDefinition> routeDefinitions = definitions.stream().filter(routeDefinition -> routeDefinition.getId().matches(".*-service")).toList();
 
-          log.info("Refreshing swagger routes: {}", routeDefinitions.stream().map(RouteDefinition::getId).collect(Collectors.toList()));
+                    log.info("Refreshing swagger routes: {}", routeDefinitions.stream().map(RouteDefinition::getId).collect(Collectors.toList()));
 
-          if (swaggerUiConfigProperties.getUrls() == null) {
-            swaggerUiConfigProperties.setUrls(new LinkedHashSet<>());
-          }
+                    if (swaggerUiConfigProperties.getUrls() == null) {
+                        swaggerUiConfigProperties.setUrls(new LinkedHashSet<>());
+                    }
 
-          routeDefinitions.forEach(routeDefinition -> {
-            String group = routeDefinition.getId();
-            AbstractSwaggerUiConfigProperties.SwaggerUrl url = new AbstractSwaggerUiConfigProperties.SwaggerUrl(
-                    group, "/" + group + "/v3/api-docs", group
-            );
-            swaggerUiConfigProperties.getUrls().add(url);
-          });
-        });
-      }
-    };
-  }
+                    routeDefinitions.forEach(routeDefinition -> {
+                        String group = routeDefinition.getId();
+                        AbstractSwaggerUiConfigProperties.SwaggerUrl url = new AbstractSwaggerUiConfigProperties.SwaggerUrl(
+                            group, "/" + group + "/v3/api-docs", group
+                        );
+                        swaggerUiConfigProperties.getUrls().add(url);
+                    });
+                });
+            }
+        };
+    }
 }

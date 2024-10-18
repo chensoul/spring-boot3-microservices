@@ -23,20 +23,20 @@ import com.chensoul.ecommerce.core.product.persistence.ProductEntity;
 public class ProductServiceApplication {
 
 
-  @Autowired
-  MongoOperations mongoTemplate;
+    @Autowired
+    MongoOperations mongoTemplate;
 
-  public static void main(String[] args) {
-    SpringApplication.run(ProductServiceApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(ProductServiceApplication.class, args);
+    }
 
-  @EventListener(ContextRefreshedEvent.class)
-  public void initIndicesAfterStartup() {
+    @EventListener(ContextRefreshedEvent.class)
+    public void initIndicesAfterStartup() {
 
-    MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
-    IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
+        MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
+        IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
 
-    IndexOperations indexOps = mongoTemplate.indexOps(ProductEntity.class);
-    resolver.resolveIndexFor(ProductEntity.class).forEach(e -> indexOps.ensureIndex(e));
-  }
+        IndexOperations indexOps = mongoTemplate.indexOps(ProductEntity.class);
+        resolver.resolveIndexFor(ProductEntity.class).forEach(indexOps::ensureIndex);
+    }
 }

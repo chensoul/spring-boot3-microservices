@@ -1,0 +1,101 @@
+name: ecommerce
+
+services:
+  customer-service:
+    image: chensoul/customer-service
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  notification-service:
+    image: chensoul/notification-service
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  order-service:
+    image: chensoul/order-service
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  payment-service:
+    image: chensoul/payment-service
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  product-service:
+    image: chensoul/product-service
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    extends:
+      file: compose.yml
+      service: postgres
+
+  mongodb:
+    extends:
+      file: compose.yml
+      service: mongodb
+
+  maildev:
+    extends:
+      file: compose.yml
+      service: maildev
+
+  zookeeper:
+    extends:
+      file: compose.yml
+      service: zookeeper
+
+  kafka:
+    extends:
+      file: compose.yml
+      service: kafka
+
+  eureka-server:
+    image: chensoul/eureka-server
+    container_name: eureka-server #单节点，需要指定容器名称
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://eureka-server:8761" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  gateway:
+    image: chensoul/gateway
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+
+volumes:
+  postgres:
+  mongo:

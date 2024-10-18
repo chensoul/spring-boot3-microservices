@@ -2,6 +2,7 @@ services:
   product:
     image: chensoul/product-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/product.yml
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USR}
@@ -20,6 +21,7 @@ services:
   recommendation:
     image: chensoul/recommendation-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/recommendation.yml
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USR}
@@ -38,6 +40,7 @@ services:
   review:
     image: chensoul/review-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/review.yml
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USR}
@@ -55,6 +58,7 @@ services:
   product-composite:
     image: chensoul/product-composite-service
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/product-composite.yml
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USR}
@@ -112,6 +116,7 @@ services:
   gateway:
     image: chensoul/gateway
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/gateway.yml
       - SPRING_SSL_BUNDLE_JKS_GATEWAY_KEYSTORE_PASSWORD=${GATEWAY_TLS_PWD}
@@ -120,7 +125,7 @@ services:
     volumes:
       - ./config-repo:/config-repo
     ports:
-      - "8443:8443"
+      - "8080:8080"
     depends_on:
       authorization:
         condition: service_healthy
@@ -128,6 +133,7 @@ services:
   authorization:
     image: chensoul/authorization-server
     environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/authorization.yml
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USR}

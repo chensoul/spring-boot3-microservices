@@ -18,51 +18,52 @@ import se.magnus.api.exception.InvalidInputException;
 import se.magnus.api.exception.NotFoundException;
 import com.chensoul.ecommerce.composite.product.services.ProductCompositeIntegration;
 
-@SpringBootTest(
-        webEnvironment = RANDOM_PORT,
-        classes = {TestSecurityConfig.class},
-        properties = {
-                "spring.security.oauth2.resourceserver.jwt.issuer-uri=",
-                "spring.main.allow-bean-definition-overriding=true",
-                "eureka.client.enabled=false",
-                "spring.cloud.config.enabled=false"})
+//@SpringBootTest(
+webEnvironment =RANDOM_PORT,
+classes ={TestSecurityConfig .class},
+properties ={
+    "spring.security.oauth2.resourceserver.jwt.issuer-uri=",
+    "spring.main.allow-bean-definition-overriding=true",
+    "eureka.client.enabled=false",
+    "spring.cloud.config.enabled=false"})
+
 class ProductCompositeServiceApplicationTests {
 
-  private static final int PRODUCT_ID_OK = 1;
-  private static final int PRODUCT_ID_NOT_FOUND = 2;
-  private static final int PRODUCT_ID_INVALID = 3;
+    private static final int PRODUCT_ID_OK = 1;
+    private static final int PRODUCT_ID_NOT_FOUND = 2;
+    private static final int PRODUCT_ID_INVALID = 3;
 
-  @Autowired
-  private WebTestClient client;
+    @Autowired
+    private WebTestClient client;
 
-  @MockBean
-  private ProductCompositeIntegration compositeIntegration;
+    @MockBean
+    private ProductCompositeIntegration compositeIntegration;
 
-  @BeforeEach
-  void setUp() {
+    @BeforeEach
+    void setUp() {
 
-    when(compositeIntegration.getProduct(PRODUCT_ID_OK))
+        when(compositeIntegration.getProduct(PRODUCT_ID_OK))
             .thenReturn(new Product(PRODUCT_ID_OK, "name", 1));
-    when(compositeIntegration.getRecommendations(PRODUCT_ID_OK))
+        when(compositeIntegration.getRecommendations(PRODUCT_ID_OK))
             .thenReturn(singletonList(new Recommendation(PRODUCT_ID_OK, 1, "author", 1, "content")));
-    when(compositeIntegration.getReviews(PRODUCT_ID_OK))
+        when(compositeIntegration.getReviews(PRODUCT_ID_OK))
             .thenReturn(singletonList(new Review(PRODUCT_ID_OK, 1, "author", "subject", "content")));
 
-    when(compositeIntegration.getProduct(PRODUCT_ID_NOT_FOUND))
+        when(compositeIntegration.getProduct(PRODUCT_ID_NOT_FOUND))
             .thenThrow(new NotFoundException("NOT FOUND: " + PRODUCT_ID_NOT_FOUND));
 
-    when(compositeIntegration.getProduct(PRODUCT_ID_INVALID))
+        when(compositeIntegration.getProduct(PRODUCT_ID_INVALID))
             .thenThrow(new InvalidInputException("INVALID: " + PRODUCT_ID_INVALID));
-  }
+    }
 
-  @Test
-  void contextLoads() {
-  }
+    @Test
+    void contextLoads() {
+    }
 
-  @Test
-  void getProductById() {
+    @Test
+    void getProductById() {
 
-    client.get()
+        client.get()
             .uri("/product-composite/" + PRODUCT_ID_OK)
             .accept(APPLICATION_JSON)
             .exchange()
@@ -72,12 +73,12 @@ class ProductCompositeServiceApplicationTests {
             .jsonPath("$.productId").isEqualTo(PRODUCT_ID_OK)
             .jsonPath("$.recommendations.length()").isEqualTo(1)
             .jsonPath("$.reviews.length()").isEqualTo(1);
-  }
+    }
 
-  @Test
-  void getProductNotFound() {
+    @Test
+    void getProductNotFound() {
 
-    client.get()
+        client.get()
             .uri("/product-composite/" + PRODUCT_ID_NOT_FOUND)
             .accept(APPLICATION_JSON)
             .exchange()
@@ -86,12 +87,12 @@ class ProductCompositeServiceApplicationTests {
             .expectBody()
             .jsonPath("$.path").isEqualTo("/product-composite/" + PRODUCT_ID_NOT_FOUND)
             .jsonPath("$.message").isEqualTo("NOT FOUND: " + PRODUCT_ID_NOT_FOUND);
-  }
+    }
 
-  @Test
-  void getProductInvalidInput() {
+    @Test
+    void getProductInvalidInput() {
 
-    client.get()
+        client.get()
             .uri("/product-composite/" + PRODUCT_ID_INVALID)
             .accept(APPLICATION_JSON)
             .exchange()
@@ -100,5 +101,5 @@ class ProductCompositeServiceApplicationTests {
             .expectBody()
             .jsonPath("$.path").isEqualTo("/product-composite/" + PRODUCT_ID_INVALID)
             .jsonPath("$.message").isEqualTo("INVALID: " + PRODUCT_ID_INVALID);
-  }
+    }
 }

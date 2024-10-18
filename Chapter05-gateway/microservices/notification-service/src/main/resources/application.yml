@@ -1,6 +1,14 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
 server.port: 8030
 
 spring.application.name: notification-service
+
+spring.main.allow-bean-definition-overriding: true
 
 spring:
   data:
@@ -41,6 +49,9 @@ spring:
 spring.config.activate.on-profile: docker
 
 server.port: 8080
+
+# docker容器中用户无法创建路径，故使用/tmp/logs
+logging.file.path: /tmp/logs/${spring.application.name}
 
 spring.data.mongodb.host: mongodb
 

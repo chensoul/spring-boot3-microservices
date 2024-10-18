@@ -1,4 +1,12 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
 server.port: 8888
+
+spring.application.name: config-server
 
 spring.profiles.active: native
 
@@ -14,10 +22,7 @@ spring.profiles.active: native
 # 需要启用 native profile。在 Idea 中， ${PWD} 可能指向的是项目跟路径，也可以通过 $MODULE_WORKING_DIR$ 设置为模块工作路径
 spring.cloud.config.server.native.searchLocations: file:${PWD}/config-repo,classpath:/config-repo
 
-logging:
-  level:
-    root: INFO
-    org.springframework.cloud: TRACE
+
 
 ---
 spring.config.activate.on-profile: docker

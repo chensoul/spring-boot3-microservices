@@ -1,6 +1,8 @@
 package com.chensoul.ecommerce.client;
 
-import com.chensoul.ecommerce.exception.BusinessException;
+import com.chensoul.exception.BusinessException
+
+    ;
 import com.chensoul.ecommerce.payment.PaymentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,26 +19,26 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @RequiredArgsConstructor
 public class PaymentClient {
-  private final RestTemplate restTemplate;
-  @Value("${application.config.payment-url}")
-  private String paymentUrl;
+    private final RestTemplate restTemplate;
+    @Value("${application.config.payment-url}")
+    private String paymentUrl;
 
-  public Integer requestOrderPayment(@RequestBody PaymentRequest requestBody) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.set(CONTENT_TYPE, APPLICATION_JSON_VALUE);
+    public Integer requestOrderPayment(@RequestBody PaymentRequest requestBody) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(CONTENT_TYPE, APPLICATION_JSON_VALUE);
 
-    HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(requestBody, headers);
+        HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(requestBody, headers);
 
-    ResponseEntity<Integer> responseEntity = restTemplate.exchange(
+        ResponseEntity<Integer> responseEntity = restTemplate.exchange(
             paymentUrl,
             POST,
             requestEntity,
             Integer.class
-    );
+        );
 
-    if (responseEntity.getStatusCode().isError()) {
-      throw new BusinessException("An error occurred while processing the payment purchase: " + responseEntity.getStatusCode());
+        if (responseEntity.getStatusCode().isError()) {
+            throw new BusinessException("An error occurred while processing the payment purchase: " + responseEntity.getStatusCode());
+        }
+        return responseEntity.getBody();
     }
-    return responseEntity.getBody();
-  }
 }

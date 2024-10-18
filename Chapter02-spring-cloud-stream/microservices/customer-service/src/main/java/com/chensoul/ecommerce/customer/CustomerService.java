@@ -1,6 +1,6 @@
 package com.chensoul.ecommerce.customer;
 
-import com.chensoul.ecommerce.exception.NotFoundException;
+import com.chensoul.exception.NotFoundException;
 import io.micrometer.common.util.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +47,7 @@ public class CustomerService {
     return this.repository.findAll()
             .stream()
             .map(this.mapper::fromCustomer)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   public CustomerResponse findByCustomerId(Integer customerId) {
@@ -63,6 +63,6 @@ public class CustomerService {
 
   public void deleteByCustomerId(Integer customerId) {
     this.repository.findByCustomerId(customerId)
-            .ifPresent(customer -> this.repository.delete(customer));
+            .ifPresent(this.repository::delete);
   }
 }

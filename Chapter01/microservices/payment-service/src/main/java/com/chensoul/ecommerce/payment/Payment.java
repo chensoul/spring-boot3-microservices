@@ -33,26 +33,26 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "payment", indexes = {@Index(name = "idx_payment_order", unique = true, columnList = "orderId,paymentMethod")})
 public class Payment {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Version
-  private Integer version;
+    @Version
+    private Integer version;
 
-  private BigDecimal amount;
+    private BigDecimal amount;
 
-  @Enumerated(EnumType.STRING)
-  private PaymentMethod paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
-  private Integer orderId;
+    private Integer orderId;
 
-  @CreatedDate
-  @Column(updatable = false, nullable = false)
-  private LocalDateTime createdDate;
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime createdDate;
 
-  @LastModifiedDate
-  @Column(insertable = false)
-  private LocalDateTime lastModifiedDate;
+    @LastModifiedDate
+    @Column(insertable = false)
+    private LocalDateTime lastModifiedDate;
 
 }

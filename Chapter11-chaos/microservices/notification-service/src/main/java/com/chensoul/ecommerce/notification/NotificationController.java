@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class NotificationController {
 
-  private final NotificationConsumer service;
+    private final NotificationConsumer service;
 
-  @PostMapping("/payment")
-  public ResponseEntity<Void> consumePaymentSuccessNotifications(@RequestBody @Valid PaymentConfirmation paymentConfirmation) throws MessagingException {
-    this.service.consumePaymentSuccessNotifications(paymentConfirmation);
-    return ResponseEntity.ok().build();
-  }
+    @PostMapping("/payment")
+    public ResponseEntity<Void> consumePaymentSuccessNotifications(@RequestBody @Valid PaymentConfirmation paymentConfirmation) {
+        this.service.consumePaymentSuccessNotifications(paymentConfirmation);
+        return ResponseEntity.ok().build();
+    }
 
-  @PostMapping("/order")
-  public ResponseEntity<Void> consumeOrderConfirmationNotifications(@RequestBody @Valid OrderConfirmation orderConfirmation) throws MessagingException {
-    this.service.consumeOrderConfirmationNotifications(orderConfirmation);
-    return ResponseEntity.ok().build();
-  }
+    @PostMapping("/order")
+    public ResponseEntity<Void> consumeOrderConfirmationNotifications(@RequestBody @Valid OrderConfirmation orderConfirmation) {
+        this.service.consumeOrderConfirmationNotifications(orderConfirmation);
+        return ResponseEntity.ok().build();
+    }
 
 }

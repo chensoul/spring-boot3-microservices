@@ -2,9 +2,12 @@
 
 服务发现可能是使协同工作的微服务架构具备生产就绪能力的最重要的支持功能。Netflix Eureka是Spring Cloud支持的第一个服务发现服务器。
 
-> 我们在严格讨论的是一种用于服务发现的服务，但不再将其称为"服务发现服务"，而是简称为"发现服务"。当提到像Netflix Eureka这样的实际服务发现实现时，将使用术语"发现服务器"。
+> 我们在严格讨论的是一种用于服务发现的服务，但不再将其称为"服务发现服务"，而是简称为"发现服务"。当提到像Netflix
+> Eureka这样的实际服务发现实现时，将使用术语"发现服务器"。
 
-我们将看到在使用Spring Cloud时，使用Netflix Eureka注册微服务是多么容易。我们还将学习客户端如何使用Spring Cloud LoadBalancer将HTTP请求发送到Netflix Eureka注册的实例之一。最后，我们将尝试扩展微服务的规模，并进行一些破坏性测试，以查看Netflix Eureka如何处理不同类型的故障场景。
+我们将看到在使用Spring Cloud时，使用Netflix Eureka注册微服务是多么容易。我们还将学习客户端如何使用Spring Cloud
+LoadBalancer将HTTP请求发送到Netflix Eureka注册的实例之一。最后，我们将尝试扩展微服务的规模，并进行一些破坏性测试，以查看Netflix
+Eureka如何处理不同类型的故障场景。
 
 在深入实现细节之前，我们将讨论以下主题：
 
@@ -12,23 +15,17 @@
 - 服务发现面临的挑战
 - 使用Spring Cloud中的Netflix Eureka进行服务发现
 
-
-
 ### 基于DNS的服务发现存在一些问题
 
 为什么我们不能简单地启动微服务的新实例并依赖轮询DNS呢？
 
 轮询DNS的理念是每个微服务实例将其IP地址注册在DNS服务器下相同的名称下。当客户端请求DNS名称的IP地址时，DNS服务器将返回已注册实例的IP地址列表。接下来，DNS客户端逐个尝试接收到的IP地址，直到找到可用的地址，通常是列表中的第一个地址。DNS客户端通常会保留并使用这个IP地址列表以轮询的方式向微服务实例发送请求，依次使用IP地址。
 
-
-
 尽管轮询DNS在某些情况下可以提供一定程度的负载均衡，但它也存在一些限制和问题：
 
 1. 缺乏健康检查：轮询DNS无法检测和排除不可用的服务实例。如果某个实例变得不可访问或出现故障，轮询DNS仍然会将请求发送到该实例，导致请求失败或延迟。
 2. 缓存延迟：DNS查询结果通常会被客户端或中间DNS服务器缓存。当启动新的服务实例时，DNS缓存可能仍然包含旧的IP地址信息，导致客户端无法立即发现新的实例。
 3. 无法应对动态变化：轮询DNS无法自动适应微服务实例的动态变化。如果有新的实例加入或现有实例下线，客户端无法即时了解到这些变化，需要等待DNS缓存过期或进行手动刷新。
-
-
 
 ### 服务发现面临的挑战
 
@@ -44,15 +41,18 @@
 
 ### Eureka简介
 
-Eureka是Netflix公司开源的一款服务发现组件，该组件提供的服务发现可以为负载均衡、failover等提供支持。Eureka包括Eureka Server及Eureka Client。Eureka Server提供REST服务，而Eureka Client则是使用Java编写的客户端，用于简化与Eureka Server的交互。
+Eureka是Netflix公司开源的一款服务发现组件，该组件提供的服务发现可以为负载均衡、failover等提供支持。Eureka包括Eureka
+Server及Eureka Client。Eureka Server提供REST服务，而Eureka Client则是使用Java编写的客户端，用于简化与Eureka Server的交互。
 
 ![eureka-01](assets/eureka-01.png)
 
-Eureka最初是针对AWS不提供中间服务层的负载均衡的限制而设计开发的。AWS Elastic Load Balancer用来对客户端或终端设备请求进行负载均衡，而Eureka则用来对中间层的服务做服务发现，配合其他组件提供负载均衡的能力。
+Eureka最初是针对AWS不提供中间服务层的负载均衡的限制而设计开发的。AWS Elastic Load
+Balancer用来对客户端或终端设备请求进行负载均衡，而Eureka则用来对中间层的服务做服务发现，配合其他组件提供负载均衡的能力。
 
 Netflix为什么要设计Eureka，而不是直接利用AWS Elastic Load Balancer或者AWS Route 53呢？其官方文档说明简要如下：
 
-> 理论上可以使用AWS Elastic Load Balancer对内部进行负载均衡，但是这样就会暴露到外网，存在安全性问题，另外AWS Elastic Load Balancer是传统的基于代理的负载均衡解决方案，无法直接基于服务元数据信息定制负载均衡算法。因此Netflix设计了Eureka，一方面给内部服务做服务发现，另一方面可以结合ribbon组件提供各种个性化的负载均衡算法。
+> 理论上可以使用AWS Elastic Load Balancer对内部进行负载均衡，但是这样就会暴露到外网，存在安全性问题，另外AWS Elastic Load
+> Balancer是传统的基于代理的负载均衡解决方案，无法直接基于服务元数据信息定制负载均衡算法。因此Netflix设计了Eureka，一方面给内部服务做服务发现，另一方面可以结合ribbon组件提供各种个性化的负载均衡算法。
 
 而AWS Route 53是一款命名服务，可以给中间层的服务提供服务发现功能，但它是基于DNS的服务，传统的基于DNS的负载均衡技术存在缓存更新延时问题，另外主要是无法对服务健康状态进行检查，因此Netflix就自己设计了Eureka。
 
@@ -60,9 +60,12 @@ Netflix为什么要设计Eureka，而不是直接利用AWS Elastic Load Balancer
 
 Netflix Eureka实现了客户端的服务发现，这意味着客户端运行与服务发现服务器Netflix Eureka进行通信的软件，以获取可用的微服务实例的信息。
 
-Spring Cloud提供了与诸如Netflix Eureka之类的服务发现工具通信的抽象，并提供了一个名为DiscoveryClient的接口。通过这个接口，我们可以与服务发现工具进行交互，获取有关可用服务和实例的信息。DiscoveryClient接口的实现还可以自动将Spring Boot应用程序注册到服务发现服务器。
+Spring Cloud提供了与诸如Netflix
+Eureka之类的服务发现工具通信的抽象，并提供了一个名为DiscoveryClient的接口。通过这个接口，我们可以与服务发现工具进行交互，获取有关可用服务和实例的信息。DiscoveryClient接口的实现还可以自动将Spring
+Boot应用程序注册到服务发现服务器。
 
-在启动时，Spring Boot可以自动找到DiscoveryClient接口的实现，因此我们只需要引入相应实现的依赖项即可连接到服务发现服务器。对于Netflix Eureka，我们的微服务使用的依赖项是`spring-cloud-starter-netflix-eureka-client`。
+在启动时，Spring Boot可以自动找到DiscoveryClient接口的实现，因此我们只需要引入相应实现的依赖项即可连接到服务发现服务器。对于Netflix
+Eureka，我们的微服务使用的依赖项是`spring-cloud-starter-netflix-eureka-client`。
 
 通过添加此依赖项，Spring Boot应用程序将具有与Netflix Eureka进行交互的能力。它将自动注册到Eureka服务器，并能够通过DiscoveryClient接口检索其他服务的信息。
 
@@ -70,23 +73,28 @@ Spring Cloud提供了与诸如Netflix Eureka之类的服务发现工具通信的
 
 > Spring Cloud还提供了支持使用Apache ZooKeeper或HashiCorp Consul作为服务发现服务器的DiscoveryClient实现。
 
-Spring Cloud还为希望通过负载均衡器向服务发现中注册的实例发出请求的客户端提供了一个抽象接口——LoadBalancerClient接口。标准的响应式HTTP客户端WebClient可以配置为使用LoadBalancerClient的实现。通过在返回WebClient.Builder对象的@Bean声明上添加@LoadBalanced注解，LoadBalancerClient的实现将作为ExchangeFilterFunction注入到Builder实例中。在本章的后面部分，我们将看到一些源代码示例，演示如何使用这个功能。
+Spring
+Cloud还为希望通过负载均衡器向服务发现中注册的实例发出请求的客户端提供了一个抽象接口——LoadBalancerClient接口。标准的响应式HTTP客户端WebClient可以配置为使用LoadBalancerClient的实现。通过在返回WebClient.Builder对象的@Bean声明上添加@LoadBalanced注解，LoadBalancerClient的实现将作为ExchangeFilterFunction注入到Builder实例中。在本章的后面部分，我们将看到一些源代码示例，演示如何使用这个功能。
 
-总结一下，Spring Cloud使得使用Netflix Eureka作为服务发现工具非常简单。通过本文对服务发现及其挑战的介绍，以及Netflix Eureka如何与Spring Cloud配合使用，我们已经准备好学习如何设置Netflix Eureka服务器了。
+总结一下，Spring Cloud使得使用Netflix Eureka作为服务发现工具非常简单。通过本文对服务发现及其挑战的介绍，以及Netflix
+Eureka如何与Spring Cloud配合使用，我们已经准备好学习如何设置Netflix Eureka服务器了。
 
 ### 服务发现技术选型
 
-Jason Wilder在2014年2月的时候写了一篇博客《Open-Source Service Discovery》（http://jasonwilder.com/blog/2014/02/04/service-discovery-in-the-cloud/），总结了当时市面上的几类服务发现组件，这里补充上consul以及一致性算法。
+Jason Wilder在2014年2月的时候写了一篇博客《Open-Source Service
+Discovery》（http://jasonwilder.com/blog/2014/02/04/service-discovery-in-the-cloud/），总结了当时市面上的几类服务发现组件，这里补充上consul以及一致性算法。
 
 ![eureka-02](assets/eureka-02.png)
 
 从列表看，有很多服务发现组件可以选择，针对AP及CP，本书主要选取了Eureka及Consul为代表来阐述。关于Eureka及Consul的区别，Consul的官方文档有一个很好的阐述（http://www.consul.io/intro/vs/eureka.html），具体如下：
 
-> Eureka Server端采用的是P2P的复制模式，但是它不保证复制操作一定能成功，因此它提供的是一个最终一致性的服务实例视图；Client端在Server端的注册信息有一个带期限的租约，一旦Server端在指定期间没有收到Client端发送的心跳，则Server端会认为Client端注册的服务是不健康的，定时任务会将其从注册表中删除。
+> Eureka
 >
-> Consul与Eureka不同，Consul采用Raft算法，可以提供强一致性的保证，Consul的agent相当于Netflix Ribbon + Netflix Eureka Client，而且对应用来说相对透明，同时相对于Eureka这种集中式的心跳检测机制，Consul的agent可以参与到基于gossip协议的健康检查，分散了Server端的心跳检测压力。除此之外，Consul为多数据中心提供了开箱即用的原生支持等。
-
-
+Server端采用的是P2P的复制模式，但是它不保证复制操作一定能成功，因此它提供的是一个最终一致性的服务实例视图；Client端在Server端的注册信息有一个带期限的租约，一旦Server端在指定期间没有收到Client端发送的心跳，则Server端会认为Client端注册的服务是不健康的，定时任务会将其从注册表中删除。
+>
+> Consul与Eureka不同，Consul采用Raft算法，可以提供强一致性的保证，Consul的agent相当于Netflix Ribbon + Netflix Eureka
+>
+Client，而且对应用来说相对透明，同时相对于Eureka这种集中式的心跳检测机制，Consul的agent可以参与到基于gossip协议的健康检查，分散了Server端的心跳检测压力。除此之外，Consul为多数据中心提供了开箱即用的原生支持等。
 
 ## 设置Netflix Eureka服务器
 
@@ -112,10 +120,13 @@ Jason Wilder在2014年2月的时候写了一篇博客《Open-Source Service Disc
        fetchRegistry: false
        serviceUrl:
          defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-     # from: https://github.com/spring-cloud-samples/eureka/blob/master/src/main/resources/application.yml
-     server:
-       waitTimeInMsWhenSyncEmpty: 0
-       response-cache-update-interval-ms: 5000
+
+# from: https://github.com/spring-cloud-samples/eureka/blob/master/src/main/resources/application.yml
+
+server:
+waitTimeInMsWhenSyncEmpty: 0
+response-cache-update-interval-ms: 5000
+
    ```
 
 5. 启动应用
@@ -237,26 +248,23 @@ eureka.server.response-cache-auto-expiration-in-seconds: 60
 eureka.server.enable-self-preservation: false
 ```
 
-
-
 针对新服务上线，Eureka Client获取不及时的问题，在测试环境，可以适当提高Client端拉取Server注册信息的频率，例如下面将默认的30秒改为5秒：
 
 ```yaml
 eureka.client.registryFetchIntervalSeconds: 5
 ```
 
+在实际生产过程中，经常会有网络抖动等问题造成服务实例与Eureka
+Server的心跳未能如期保持，但是服务实例本身是健康的，这个时候如果按照租约剔除机制剔除的话，会造成误判，如果大范围误判的话，可能会导致整个服务注册列表的大部分注册信息被删除，从而没有可用服务。Eureka为了解决这个问题引入了SELF
+PRESERVATION机制，当最近一分钟接收到的续约的次数小于等于指定阈值的话，则关闭租约失效剔除，禁止定时任务剔除失效的实例，从而保护注册信息。对于开发测试环境，开启这个机制有时候反而会影响系统的持续集成，因此可以通过如下参数关闭该机制：
 
-
-在实际生产过程中，经常会有网络抖动等问题造成服务实例与Eureka Server的心跳未能如期保持，但是服务实例本身是健康的，这个时候如果按照租约剔除机制剔除的话，会造成误判，如果大范围误判的话，可能会导致整个服务注册列表的大部分注册信息被删除，从而没有可用服务。Eureka为了解决这个问题引入了SELF PRESERVATION机制，当最近一分钟接收到的续约的次数小于等于指定阈值的话，则关闭租约失效剔除，禁止定时任务剔除失效的实例，从而保护注册信息。对于开发测试环境，开启这个机制有时候反而会影响系统的持续集成，因此可以通过如下参数关闭该机制：
-
-在生产环境中，可以把renewalPercentThreshold及leaseRenewalIntervalInSeconds参数调小一点，进而提高触发SELF PRESERVATION机制的门槛，比如：
+在生产环境中，可以把renewalPercentThreshold及leaseRenewalIntervalInSeconds参数调小一点，进而提高触发SELF
+PRESERVATION机制的门槛，比如：
 
 ```yaml
 eureka.instance.lease-renewal-interval-in-seconds: 10 #默认30
 eureka.server.renewal-percent-threshold: 0.5 #默认 0.85
 ```
-
-
 
 ### 指标监控
 
@@ -264,4 +272,6 @@ Eureka 内置了基于 servo 的指标统计，具体详见 EurekaMonitors 类
 
 ![eureka-10](assets/eureka-10.png)
 
-Spring Boot 2.x版本改为使用 Micrometer，不再支持 Netflix Servo，转而支持了Netflix Servo的替代者 [Netflix Spectator](https://github.com/Netflix/spectator)。不过对于Servo，可以通过 `DefaultMonitorRegistry.getInstance(). getRegisteredMonitors()` 来获取所有注册了的Monitor，进而获取其指标值。
+Spring Boot 2.x版本改为使用 Micrometer，不再支持 Netflix Servo，转而支持了Netflix
+Servo的替代者 [Netflix Spectator](https://github.com/Netflix/spectator)。不过对于Servo，可以通过
+`DefaultMonitorRegistry.getInstance(). getRegisteredMonitors()` 来获取所有注册了的Monitor，进而获取其指标值。
