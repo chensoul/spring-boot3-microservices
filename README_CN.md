@@ -250,9 +250,17 @@ mvn clean verify -DskipTests sonar:sonar -Dsonar.login=admin -Dsonar.password=ad
 以下是 github 上微服务项目源代码：
 
 - https://github.com/chensoul/Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
-- https://github.com/chensoul/spring-boot-microservices-ecommerce
 - https://github.com/chensoul/spring-boot-microservices
 - https://github.com/chensoul/spring-boot-3-microservices-course
 - https://github.com/in28minutes/spring-microservices-v3
 - https://github.com/ali-bouali/microservices-full-code
 - https://github.com/jhipster/jhipster-lite
+
+## 贡献
+
+非常欢迎[提出请求](https://help.github.com/articles/creating-a-pull-request) 。
+
+## 许可
+
+learn-spring-authorization-server 是在 [Apache 2.0 许可](https://www.apache.org/licenses/LICENSE-2.0.html)
+下发布的开源软件 。
