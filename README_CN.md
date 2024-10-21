@@ -1,6 +1,6 @@
 ![video_spider](https://socialify.git.ci/chensoul/spring-boot-microservices-ecommerce/image?forks=1&issues=1&language=1&name=1&owner=1&stargazers=1&theme=Light)
 
-# <font size="6p">spring-oauth2-sample</font> <font size="5p">  | [English Documentation](README.md)</font>
+# <font size="6p">spring-boot-microservices-ecommerce</font> <font size="5p">  | [English Documentation](README.md)</font>
 
 <p align="left">
 	<a href="https://github.com/chensoul/spring-boot-microservices-ecommerce/stargazers"><img src="https://img.shields.io/github/stars/chensoul/spring-boot-microservices-ecommerce?style=flat-square&logo=GitHub"></a>
@@ -13,7 +13,7 @@
 使用 Spring Cloud、Istio 和 Kubernetes 构建的一个电商 [微服务](http://www.martinfowler.com/articles/microservices.html)
 项目。
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/spring-petclinic/spring-petclinic-microservices)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/chensoul/spring-boot-microservices-ecommerce)
 
 ## 概述
 
@@ -241,9 +241,8 @@ mvn clean verify -DskipTests sonar:sonar -Dsonar.login=admin -Dsonar.password=ad
 
 以下是介绍微服务项目的视频：
 
-- [Mastering Microservices: Spring boot, Spring Cloud and Keycloak In 7 Hours](Mastering Microservices: Spring boot,
-  Spring Cloud and Keycloak In 7 Hours)
-- [Distributed version of the Spring PetClinic Sample Application built with Spring Cloud and Spring AI](https://github.com/odedia/spring-petclinic-microservices)
+- [Mastering Microservices: Spring boot, Spring Cloud and Keycloak In 7 Hours](https://www.youtube.com/watch?v=jdeSV0GRvwI)
+- [Distributed version of the Spring PetClinic Sample Application built with Spring Cloud and Spring AI](https://github.com/odedia/spring-boot-microservices-ecommerce)
 - [Spring Boot 3 Microservices with Kubernetes and Angular Complete Course in 7 Hours](https://www.youtube.com/watch?v=yn_stY3HCr8)
 
 ### 源代码
@@ -251,7 +250,7 @@ mvn clean verify -DskipTests sonar:sonar -Dsonar.login=admin -Dsonar.password=ad
 以下是 github 上微服务项目源代码：
 
 - https://github.com/chensoul/Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
-- https://github.com/chensoul/spring-petclinic-microservices
+- https://github.com/chensoul/spring-boot-microservices-ecommerce
 - https://github.com/chensoul/spring-boot-microservices
 - https://github.com/chensoul/spring-boot-3-microservices-course
 - https://github.com/in28minutes/spring-microservices-v3
