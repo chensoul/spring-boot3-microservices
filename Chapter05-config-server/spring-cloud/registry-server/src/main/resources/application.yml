@@ -1,0 +1,27 @@
+server.port: 8761
+
+spring.application.name: registry-server
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+spring.profiles.active: native
+
+# 需要启用 native profile。在 Idea 中， ${PWD} 可能指向的是项目跟路径，也可以通过 $MODULE_WORKING_DIR$ 设置为模块工作路径
+spring.cloud.config.server.native.searchLocations: file:${PWD}/config-repo,classpath:/config-repo
+spring:
+  cloud:
+    config:
+      server:
+        prefix: /config
+        
+---
+spring.config.activate.on-profile: docker
+
+spring.config.import: configserver:http://config-server:8888

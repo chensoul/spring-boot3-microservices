@@ -1,8 +1,0 @@
-com.chensoul.config.async.AsyncConfiguration
-com.chensoul.config.apidoc.SpringDocConfiguration
-com.chensoul.config.error.GlobalControllerExceptionHandler
-com.chensoul.config.jackson.JacksonConfiguration
-com.chensoul.config.logging.LoggingAspectConfiguration
-com.chensoul.config.logging.LoggingConfiguration
-com.chensoul.config.metric.MetricsEndpointConfiguration
-com.chensoul.config.security.ssl.UndertowSSLConfiguration

@@ -1,6 +1,6 @@
 package com.chensoul.ecommerce.customer;
 
-import com.chensoul.exception.NotFoundException;
+import com.chensoul.framework.exception.NotFoundException;
 import io.micrometer.common.util.StringUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

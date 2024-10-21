@@ -1,0 +1,20 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+server.port: 9999
+
+
+jwt.publicKey: classpath:app.pub
+# DO NOT Store private key in the Git Repository
+# This is a sample application, and I added it only for demonstration purposes
+jwt.privateKey: classpath:app.key
+
+---
+spring.config.activate.on-profile: docker
+
+eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka/
+
+logging.loki.url: http://localhost:3100/loki/api/v1/push

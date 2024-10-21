@@ -48,3 +48,7 @@ Content-Type: application/json
     }
   ]
 }
+
+### Eureka
+GET http://localhost:8761/eureka/apps
+Accept: application/json

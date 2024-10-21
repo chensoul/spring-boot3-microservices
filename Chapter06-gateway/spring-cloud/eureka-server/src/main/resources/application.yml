@@ -1,0 +1,18 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+server.port: 8761
+
+spring.application.name: eureka-server
+
+spring.config.import: optional:configserver:http://localhost:8888/
+
+---
+spring.config.activate.on-profile: docker
+
+spring.config.import: configserver:http://config-server:8888
+
+

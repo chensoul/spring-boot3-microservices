@@ -1,0 +1,9 @@
+com.chensoul.framework.config.async.AsyncConfiguration
+com.chensoul.framework.config.springdoc.SpringDocConfiguration
+com.chensoul.framework.config.error.GlobalControllerExceptionHandler
+com.chensoul.framework.config.jackson.JacksonConfiguration
+com.chensoul.framework.config.logging.LoggingAspectConfiguration
+com.chensoul.framework.config.logging.LogstashConfiguration
+com.chensoul.framework.config.logging.LokiConfiguration
+com.chensoul.framework.config.metric.MetricConfiguration
+com.chensoul.framework.config.security.ssl.UndertowSSLConfiguration

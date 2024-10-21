@@ -1,0 +1,65 @@
+### Login
+POST http://localhost:9999/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type = client_credentials &
+client_id = client &
+client_secret = secret
+
+### Customer - get all
+GET https://localhost:8443/api/v1/customers
+
+### Customer - delete
+DELETE https://localhost:8443/api/v1/customers/1
+
+### Customer - add
+POST https://localhost:8443/api/v1/customers
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "firstname": "chen",
+  "lastname": "soul",
+  "email": "ichensoul@gmail.com"
+}
+
+### Customer - get
+GET https://localhost:8443/api/v1/customers/1
+
+### Customer - exists
+GET https://localhost:8443/api/v1/customers/exists/1
+
+
+### Product - get all
+GET https://localhost:8443/api/v1/products
+
+### Order - find all
+GET https://localhost:8443/api/v1/orders
+
+### Order - Delete
+DELETE https://localhost:8443/api/v1/orders/2
+
+### Order - Create
+POST https://localhost:8443/api/v1/orders
+Content-Type: application/json
+
+{
+  "totalAmount": 99.99,
+  "paymentMethod": "PAYPAL",
+  "customerId": 1,
+  "products": [
+    {
+      "productId": 1,
+      "quantity": 1
+    }
+  ]
+}
+
+
+### Eureka
+GET http://localhost:8761/eureka/apps
+Accept: application/json
+
+### Config Server
+GET http://localhost:8888/application-default.yml
