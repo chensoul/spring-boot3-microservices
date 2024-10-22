@@ -321,11 +321,11 @@
       <distributionManagement>
         <snapshotRepository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/jhipster/jhipster-bom/</url>
+          <url>https://maven.pkg.github.com/chensoul/chensoul-bom/</url>
         </snapshotRepository>
         <repository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/jhipster/jhipster-bom/</url>
+          <url>https://maven.pkg.github.com/chensoul/chensoul-bom/</url>
         </repository>
       </distributionManagement>
     </profile>
