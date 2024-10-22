@@ -28,6 +28,7 @@ public class AggravateMetricsEndpoint {
      * Constant <code>MISSING_NAME_TAG_MESSAGE="Missing name tag for metric {}"</code>
      */
     public static final String MISSING_NAME_TAG_MESSAGE = "Missing name tag for metric {}";
+
     private final MeterRegistry meterRegistry;
     private final Logger logger = LoggerFactory.getLogger(AggravateMetricsEndpoint.class);
 
@@ -73,11 +74,12 @@ public class AggravateMetricsEndpoint {
         Map<String, Number> resultsProcess = new HashMap<>();
 
         Collection<Gauge> gauges = Search.in(meterRegistry)
-            .name(s -> s.contains("cpu") || s.contains("system") || s.contains("process"))
-            .gauges();
+                .name(s -> s.contains("cpu") || s.contains("system") || s.contains("process"))
+                .gauges();
         gauges.forEach(gauge -> resultsProcess.put(gauge.getId().getName(), gauge.value()));
 
-        Collection<TimeGauge> timeGauges = Search.in(meterRegistry).name(s -> s.contains("process")).timeGauges();
+        Collection<TimeGauge> timeGauges =
+                Search.in(meterRegistry).name(s -> s.contains("process")).timeGauges();
         timeGauges.forEach(gauge -> resultsProcess.put(gauge.getId().getName(), gauge.value(TimeUnit.MILLISECONDS)));
 
         return resultsProcess;
@@ -86,7 +88,8 @@ public class AggravateMetricsEndpoint {
     private Map<String, Object> garbageCollectorMetrics() {
         Map<String, Object> resultsGarbageCollector = new HashMap<>();
 
-        Collection<Timer> timers = Search.in(meterRegistry).name(s -> s.contains("jvm.gc.pause")).timers();
+        Collection<Timer> timers =
+                Search.in(meterRegistry).name(s -> s.contains("jvm.gc.pause")).timers();
         timers.forEach(timer -> {
             String key = timer.getId().getName();
 
@@ -104,20 +107,27 @@ public class AggravateMetricsEndpoint {
             resultsGarbageCollector.putIfAbsent(key, gcPauseResults);
         });
 
-        Collection<Gauge> gauges = Search.in(meterRegistry).name(s -> s.contains("jvm.gc") && !s.contains("jvm.gc.pause")).gauges();
+        Collection<Gauge> gauges = Search.in(meterRegistry)
+                .name(s -> s.contains("jvm.gc") && !s.contains("jvm.gc.pause"))
+                .gauges();
         gauges.forEach(gauge -> resultsGarbageCollector.put(gauge.getId().getName(), gauge.value()));
 
-        Collection<Counter> counters = Search.in(meterRegistry).name(s -> s.contains("jvm.gc") && !s.contains("jvm.gc.pause")).counters();
+        Collection<Counter> counters = Search.in(meterRegistry)
+                .name(s -> s.contains("jvm.gc") && !s.contains("jvm.gc.pause"))
+                .counters();
         counters.forEach(counter -> resultsGarbageCollector.put(counter.getId().getName(), counter.count()));
 
-        gauges = Search.in(meterRegistry).name(s -> s.contains("jvm.classes.loaded")).gauges();
+        gauges = Search.in(meterRegistry)
+                .name(s -> s.contains("jvm.classes.loaded"))
+                .gauges();
         Double classesLoaded = gauges.stream().mapToDouble(Gauge::value).sum();
         resultsGarbageCollector.put("classesLoaded", classesLoaded);
 
         Collection<FunctionCounter> functionCounters = Search.in(meterRegistry)
-            .name(s -> s.contains("jvm.classes.unloaded"))
-            .functionCounters();
-        Double classesUnloaded = functionCounters.stream().mapToDouble(FunctionCounter::count).sum();
+                .name(s -> s.contains("jvm.classes.unloaded"))
+                .functionCounters();
+        Double classesUnloaded =
+                functionCounters.stream().mapToDouble(FunctionCounter::count).sum();
         resultsGarbageCollector.put("classesUnloaded", classesUnloaded);
 
         return resultsGarbageCollector;
@@ -126,9 +136,11 @@ public class AggravateMetricsEndpoint {
     private Map<String, Map<String, Number>> databaseMetrics() {
         Map<String, Map<String, Number>> resultsDatabase = new HashMap<>();
 
-        Collection<Timer> timers = Search.in(meterRegistry).name(s -> s.contains("hikari")).timers();
+        Collection<Timer> timers =
+                Search.in(meterRegistry).name(s -> s.contains("hikari")).timers();
         timers.forEach(timer -> {
-            String key = timer.getId().getName().substring(timer.getId().getName().lastIndexOf('.') + 1);
+            String key =
+                    timer.getId().getName().substring(timer.getId().getName().lastIndexOf('.') + 1);
 
             resultsDatabase.putIfAbsent(key, new HashMap<>());
             resultsDatabase.get(key).put("count", timer.count());
@@ -138,13 +150,17 @@ public class AggravateMetricsEndpoint {
 
             ValueAtPercentile[] percentiles = timer.takeSnapshot().percentileValues();
             for (ValueAtPercentile percentile : percentiles) {
-                resultsDatabase.get(key).put(String.valueOf(percentile.percentile()), percentile.value(TimeUnit.MILLISECONDS));
+                resultsDatabase
+                        .get(key)
+                        .put(String.valueOf(percentile.percentile()), percentile.value(TimeUnit.MILLISECONDS));
             }
         });
 
-        Collection<Gauge> gauges = Search.in(meterRegistry).name(s -> s.contains("hikari")).gauges();
+        Collection<Gauge> gauges =
+                Search.in(meterRegistry).name(s -> s.contains("hikari")).gauges();
         gauges.forEach(gauge -> {
-            String key = gauge.getId().getName().substring(gauge.getId().getName().lastIndexOf('.') + 1);
+            String key =
+                    gauge.getId().getName().substring(gauge.getId().getName().lastIndexOf('.') + 1);
             resultsDatabase.putIfAbsent(key, new HashMap<>());
             resultsDatabase.get(key).put("value", gauge.value());
         });
@@ -156,7 +172,8 @@ public class AggravateMetricsEndpoint {
         Collection<String> crudOperation = Arrays.asList("GET", "POST", "PUT", "DELETE");
         Collection<Timer> timers = meterRegistry.find("http.server.requests").timers();
 
-        Set<String> uris = timers.stream().map(timer -> timer.getId().getTag("uri")).collect(Collectors.toSet());
+        Set<String> uris =
+                timers.stream().map(timer -> timer.getId().getTag("uri")).collect(Collectors.toSet());
         Map<String, Map<?, ?>> resultsHttpPerUri = new HashMap<>();
 
         uris.forEach(uri -> {
@@ -166,14 +183,19 @@ public class AggravateMetricsEndpoint {
                 Map<String, Number> resultsPerUriPerCrudOperation = new HashMap<>();
 
                 Collection<Timer> httpTimersStream = meterRegistry
-                    .find("http.server.requests")
-                    .tags("uri", uri, "method", operation)
-                    .timers();
+                        .find("http.server.requests")
+                        .tags("uri", uri, "method", operation)
+                        .timers();
                 long count = httpTimersStream.stream().mapToLong(Timer::count).sum();
 
                 if (count != 0) {
-                    double max = httpTimersStream.stream().mapToDouble(x -> x.totalTime(TimeUnit.MILLISECONDS)).max().orElse(0);
-                    double totalTime = httpTimersStream.stream().mapToDouble(x -> x.totalTime(TimeUnit.MILLISECONDS)).sum();
+                    double max = httpTimersStream.stream()
+                            .mapToDouble(x -> x.totalTime(TimeUnit.MILLISECONDS))
+                            .max()
+                            .orElse(0);
+                    double totalTime = httpTimersStream.stream()
+                            .mapToDouble(x -> x.totalTime(TimeUnit.MILLISECONDS))
+                            .sum();
 
                     resultsPerUriPerCrudOperation.put("count", count);
                     resultsPerUriPerCrudOperation.put("max", max);
@@ -193,8 +215,8 @@ public class AggravateMetricsEndpoint {
         Map<String, Map<String, Number>> resultsCache = new HashMap<>();
 
         Collection<FunctionCounter> counters = Search.in(meterRegistry)
-            .name(s -> s.contains("cache") && !s.contains("hibernate"))
-            .functionCounters();
+                .name(s -> s.contains("cache") && !s.contains("hibernate"))
+                .functionCounters();
         counters.forEach(counter -> {
             String key = counter.getId().getName();
             String name = counter.getId().getTag("name");
@@ -209,7 +231,8 @@ public class AggravateMetricsEndpoint {
             }
         });
 
-        Collection<Gauge> gauges = Search.in(meterRegistry).name(s -> s.contains("cache")).gauges();
+        Collection<Gauge> gauges =
+                Search.in(meterRegistry).name(s -> s.contains("cache")).gauges();
         gauges.forEach(gauge -> {
             String key = gauge.getId().getName();
             String name = gauge.getId().getTag("name");
@@ -243,7 +266,9 @@ public class AggravateMetricsEndpoint {
             resultsJvm.get(key).put("max", gauge.value());
         });
 
-        gauges = Search.in(meterRegistry).name(s -> s.contains("jvm.memory.committed")).gauges();
+        gauges = Search.in(meterRegistry)
+                .name(s -> s.contains("jvm.memory.committed"))
+                .gauges();
         gauges.forEach(gauge -> {
             String key = gauge.getId().getTag("id");
             resultsJvm.get(key).put("committed", gauge.value());
@@ -264,10 +289,18 @@ public class AggravateMetricsEndpoint {
         statusCode.forEach(code -> {
             Map<String, Number> resultsPerCode = new HashMap<>();
 
-            Collection<Timer> httpTimersStream = meterRegistry.find("http.server.requests").tag("status", code).timers();
+            Collection<Timer> httpTimersStream = meterRegistry
+                    .find("http.server.requests")
+                    .tag("status", code)
+                    .timers();
             long count = httpTimersStream.stream().mapToLong(Timer::count).sum();
-            double max = httpTimersStream.stream().mapToDouble(x -> x.max(TimeUnit.MILLISECONDS)).max().orElse(0);
-            double totalTime = httpTimersStream.stream().mapToDouble(x -> x.totalTime(TimeUnit.MILLISECONDS)).sum();
+            double max = httpTimersStream.stream()
+                    .mapToDouble(x -> x.max(TimeUnit.MILLISECONDS))
+                    .max()
+                    .orElse(0);
+            double totalTime = httpTimersStream.stream()
+                    .mapToDouble(x -> x.totalTime(TimeUnit.MILLISECONDS))
+                    .sum();
 
             resultsPerCode.put("count", count);
             resultsPerCode.put("max", max);

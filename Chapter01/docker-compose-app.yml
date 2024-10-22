@@ -48,17 +48,17 @@ services:
 
   postgres:
     extends:
-      file: compose.yml
+      file: docker-compose-infra.yml
       service: postgres
 
   mongodb:
     extends:
-      file: compose.yml
+      file: docker-compose-infra.yml
       service: mongodb
 
   maildev:
     extends:
-      file: compose.yml
+      file: docker-compose-infra.yml
       service: maildev
 
 volumes:

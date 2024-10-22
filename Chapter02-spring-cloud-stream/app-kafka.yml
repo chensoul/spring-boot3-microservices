@@ -86,32 +86,32 @@ services:
 
 postgres:
   extends:
-    file: compose.yml
+    file: docker-compose-infra.yml
     service: postgres
 
   mongodb:
     extends:
-      file: compose.yml
+      file: docker-compose-infra.yml
       service: mongodb
 
   maildev:
     extends:
-      file: compose.yml
+      file: docker-compose-infra.yml
       service: maildev
 
   zookeeper:
     extends:
-      file: compose.yml
+      file: docker-compose-infra.yml
       service: zookeeper
 
   kafka:
     extends:
-      file: compose.yml
+      file: docker-compose-infra.yml
       service: kafka
 
   rabbitmq:
     extends:
-      file: compose.yml
+      file: docker-compose-infra.yml
       service: rabbitmq
 
 volumes:

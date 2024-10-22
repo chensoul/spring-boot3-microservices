@@ -1,7 +1,8 @@
 package com.chensoul.framework.config.security;
 
-import com.chensoul.framework.config.metric.SecurityMetersService;
 import static com.chensoul.framework.config.security.SecurityUtils.JWT_ALGORITHM;
+
+import com.chensoul.framework.config.metric.SecurityMetersService;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
 import javax.crypto.SecretKey;
@@ -28,7 +29,9 @@ public class SecurityJwtConfiguration {
 
     @Bean
     public JwtDecoder jwtDecoder(SecurityMetersService metersService) {
-        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey()).macAlgorithm(JWT_ALGORITHM).build();
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey())
+                .macAlgorithm(JWT_ALGORITHM)
+                .build();
 
         return token -> {
             try {
@@ -38,11 +41,9 @@ public class SecurityJwtConfiguration {
                     metersService.trackTokenInvalidSignature();
                 } else if (e.getMessage().contains("Jwt expired at")) {
                     metersService.trackTokenExpired();
-                } else if (
-                    e.getMessage().contains("Invalid JWT serialization") ||
-                    e.getMessage().contains("Malformed token") ||
-                    e.getMessage().contains("Invalid unsecured/JWS/JWE")
-                ) {
+                } else if (e.getMessage().contains("Invalid JWT serialization")
+                        || e.getMessage().contains("Malformed token")
+                        || e.getMessage().contains("Invalid unsecured/JWS/JWE")) {
                     metersService.trackTokenMalformed();
                 } else {
                     LOG.error("Unknown JWT error {}", e.getMessage());

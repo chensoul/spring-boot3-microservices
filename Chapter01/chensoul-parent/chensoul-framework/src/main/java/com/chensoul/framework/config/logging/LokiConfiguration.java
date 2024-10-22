@@ -19,7 +19,6 @@ import org.springframework.core.env.Environment;
 @EnableConfigurationProperties(Logging.class)
 public class LokiConfiguration {
 
-
     public LokiConfiguration(Logging logging, Environment environment) {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         Logging.Loki loki = logging.getLoki();
@@ -49,7 +48,9 @@ public class LokiConfiguration {
         AbstractLoki4jEncoder loki4jEncoder = new JsonEncoder();
         AbstractLoki4jEncoder.LabelCfg labelCfg = new AbstractLoki4jEncoder.LabelCfg();
         if (StringUtils.isNotBlank(lokiProperties.getLabelPattern())) {
-            labelCfg.setPattern(lokiProperties.getLabelPattern().replace("${appName}", environment.getProperty("spring.application.name")));
+            labelCfg.setPattern(lokiProperties
+                    .getLabelPattern()
+                    .replace("${appName}", environment.getProperty("spring.application.name")));
         }
         loki4jEncoder.setLabel(labelCfg);
 

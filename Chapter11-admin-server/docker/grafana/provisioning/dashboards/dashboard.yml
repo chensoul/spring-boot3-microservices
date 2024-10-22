@@ -1,11 +1,12 @@
 apiVersion: 1
 
 providers:
-  - name: 'default'
+  - name: 'Prometheus'
     orgId: 1
     folder: ''
     type: file
     disableDeletion: false
     updateIntervalSeconds: 10 #how often Grafana will scan for changed dashboards
+    editable: true
     options:
-      path: /var/lib/grafana/dashboards
+      path: /etc/grafana/provisioning/dashboards

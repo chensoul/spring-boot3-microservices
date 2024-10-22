@@ -255,6 +255,7 @@ mvn clean verify -DskipTests sonar:sonar -Dsonar.login=admin -Dsonar.password=ad
 - https://github.com/in28minutes/spring-microservices-v3
 - https://github.com/ali-bouali/microservices-full-code
 - https://github.com/jhipster/jhipster-lite
+- https://github.com/sivaprasadreddy/spring-boot-microservices-course
 
 ## 贡献
 

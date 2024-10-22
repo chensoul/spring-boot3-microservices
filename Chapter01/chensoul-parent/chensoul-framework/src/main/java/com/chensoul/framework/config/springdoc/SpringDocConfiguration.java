@@ -1,5 +1,7 @@
 package com.chensoul.framework.config.springdoc;
 
+import static org.springdoc.core.utils.SpringDocUtils.getConfig;
+
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -10,7 +12,6 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
-import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -39,25 +40,28 @@ public class SpringDocConfiguration {
     public OpenAPI openAPI(ApiDocs properties, @Nullable BuildProperties buildProperties) {
         log.info("Initializing OpenApi");
 
-        String buildArtifact = buildProperties != null ? buildProperties.getArtifact().replaceAll("-", " ") : applicationName;
+        String buildArtifact =
+                buildProperties != null ? buildProperties.getArtifact().replaceAll("-", " ") : applicationName;
         String buildVersion = buildProperties != null ? buildProperties.getVersion() : "0.0.1";
 
-        String title = StringUtils.defaultIfBlank(properties.getTitle(), StringUtils.capitalize(buildArtifact) + " API");
+        String title =
+                StringUtils.defaultIfBlank(properties.getTitle(), StringUtils.capitalize(buildArtifact) + " API");
         String version = StringUtils.defaultIfBlank(properties.getVersion(), buildVersion);
-        String description = StringUtils.defaultIfBlank(properties.getDescription(), "This is the REST API for " + title);
+        String description =
+                StringUtils.defaultIfBlank(properties.getDescription(), "This is the REST API for " + title);
 
         Info info = new Info()
-            .title(title)
-            .description(description)
-            .version(version)
-            .license(new License().name(properties.getLicense()).url(properties.getLicenseUrl()))
-            .termsOfService(properties.getTermsOfServiceUrl());
+                .title(title)
+                .description(description)
+                .version(version)
+                .license(new License().name(properties.getLicense()).url(properties.getLicenseUrl()))
+                .termsOfService(properties.getTermsOfServiceUrl());
 
         if (properties.getContactName() != null) {
             Contact contact = new Contact()
-                .name(properties.getContactName())
-                .url(properties.getContactUrl())
-                .email(properties.getContactEmail());
+                    .name(properties.getContactName())
+                    .url(properties.getContactUrl())
+                    .email(properties.getContactEmail());
             info.contact(contact);
         }
 

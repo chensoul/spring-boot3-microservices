@@ -10,6 +10,7 @@ import java.net.InetSocketAddress;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.composite.ContextJsonProvider;
 import net.logstash.logback.composite.GlobalCustomFieldsJsonProvider;
+import net.logstash.logback.composite.LogstashVersionJsonProvider;
 import net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider;
 import net.logstash.logback.composite.loggingevent.LogLevelJsonProvider;
 import net.logstash.logback.composite.loggingevent.LoggerNameJsonProvider;
@@ -17,6 +18,7 @@ import net.logstash.logback.composite.loggingevent.LoggingEventFormattedTimestam
 import net.logstash.logback.composite.loggingevent.LoggingEventJsonProviders;
 import net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider;
 import net.logstash.logback.composite.loggingevent.LoggingEventThreadNameJsonProvider;
+import net.logstash.logback.composite.loggingevent.LogstashMarkersJsonProvider;
 import net.logstash.logback.composite.loggingevent.MdcJsonProvider;
 import net.logstash.logback.composite.loggingevent.MessageJsonProvider;
 import net.logstash.logback.composite.loggingevent.StackTraceJsonProvider;
@@ -67,15 +69,13 @@ public final class LogstashUtils {
      * @param logstashProperties a {@link Logging.Logstash} object.
      */
     public static void addLogstashTcpSocketAppender(
-        LoggerContext context,
-        String customFields,
-        Logging.Logstash logstashProperties
-    ) {
+        LoggerContext context, String customFields, Logging.Logstash logstashProperties) {
         log.info("Add LogstashTcpSocketAppender");
 
         // More documentation is available at: https://github.com/logstash/logstash-logback-encoder
         LogstashTcpSocketAppender logstashAppender = new LogstashTcpSocketAppender();
-        logstashAppender.addDestinations(new InetSocketAddress(logstashProperties.getHost(), logstashProperties.getPort()));
+        logstashAppender.addDestinations(
+            new InetSocketAddress(logstashProperties.getHost(), logstashProperties.getPort()));
         logstashAppender.setContext(context);
         logstashAppender.setEncoder(logstashEncoder(customFields));
         logstashAppender.setName(ASYNC_LOGSTASH_APPENDER_NAME);
@@ -120,6 +120,8 @@ public final class LogstashUtils {
         jsonProviders.addGlobalCustomFields(customFieldsJsonProvider(customFields));
         jsonProviders.addLogLevel(new LogLevelJsonProvider());
         jsonProviders.addLoggerName(loggerNameJsonProvider());
+        jsonProviders.addLogstashMarkers(new LogstashMarkersJsonProvider());
+        jsonProviders.addVersion(new LogstashVersionJsonProvider<>());
         jsonProviders.addMdc(new MdcJsonProvider());
         jsonProviders.addMessage(new MessageJsonProvider());
         jsonProviders.addPattern(new LoggingEventPatternJsonProvider());
@@ -155,7 +157,8 @@ public final class LogstashUtils {
     }
 
     private static LoggingEventFormattedTimestampJsonProvider timestampJsonProvider() {
-        LoggingEventFormattedTimestampJsonProvider timestampJsonProvider = new LoggingEventFormattedTimestampJsonProvider();
+        LoggingEventFormattedTimestampJsonProvider timestampJsonProvider =
+            new LoggingEventFormattedTimestampJsonProvider();
         timestampJsonProvider.setTimeZone("UTC");
         timestampJsonProvider.setFieldName("timestamp");
         return timestampJsonProvider;

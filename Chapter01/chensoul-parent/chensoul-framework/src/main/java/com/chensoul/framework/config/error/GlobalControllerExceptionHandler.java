@@ -1,12 +1,13 @@
 package com.chensoul.framework.config.error;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import com.chensoul.framework.exception.BusinessException;
 import com.chensoul.framework.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -47,9 +48,9 @@ public class GlobalControllerExceptionHandler {
         final ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail.replaceAll("\\s+", " "));
 
         // Adds errors fields on validation errors, following RFC 9457 best practices.
-//    if (!CollectionUtils.isEmpty(errors)) {
-//      problemDetail.setProperty("errors", errors);
-//    }
+        //    if (!CollectionUtils.isEmpty(errors)) {
+        //      problemDetail.setProperty("errors", errors);
+        //    }
         return problemDetail;
     }
 }

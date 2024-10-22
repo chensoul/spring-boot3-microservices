@@ -23,10 +23,12 @@ import org.springframework.context.annotation.Configuration;
 public class LogstashConfiguration {
     @Value("${spring.application.name}")
     String appName;
+
     @Value("${server.port}")
     String serverPort;
 
-    public LogstashConfiguration(Logging logging, ObjectProvider<BuildProperties> buildProperties, ObjectMapper mapper) throws JsonProcessingException {
+    public LogstashConfiguration(Logging logging, ObjectProvider<BuildProperties> buildProperties, ObjectMapper mapper)
+            throws JsonProcessingException {
         Map<String, String> map = new HashMap<>();
         map.put("app_name", appName);
         map.put("app_port", serverPort);

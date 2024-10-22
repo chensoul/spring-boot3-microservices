@@ -1,43 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true">
-  <springProperty name="appName" source="spring.application.name" defaultValue="app"/>
-  <springProperty name="log.level" source="logging.level.root" defaultValue="INFO"/>
-
+<configuration>
   <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-  <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/all.log}"/>
   <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
-  <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+  <springProperty scope="context" name="appName" source="spring.application.name"/>
 
-  <springProperty name="lokiUrl" scope="context" source="logging.loki.url"/>
-  <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
-    <http>
-      <url>${lokiUrl}</url>
-    </http>
-    <format>
-      <label>
-        <pattern>application=${appName},host=${HOSTNAME},level=%level</pattern>
-      </label>
-      <message>
-        <pattern>${FILE_LOG_PATTERN}</pattern>
-      </message>
-      <sortByTime>true</sortByTime>
-    </format>
-  </appender>
+  <springProfile name="default">
+    <root level="INFO">
+      <appender-ref ref="CONSOLE"/>
+    </root>
+  </springProfile>
 
-  <!--  <root level="INFO">-->
-  <!--    <appender-ref ref="LOKI"/>-->
-  <!--  </root>-->
+  <springProfile name="!default">
+    <property name="LOG_FILE" value="logs/${appName}.log"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
 
-  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
-    <queueSize>512</queueSize>
-    <discardingThreshold>0</discardingThreshold>
-    <appender-ref ref="FILE"/>
-  </appender>
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+      <queueSize>512</queueSize>
+      <discardingThreshold>0</discardingThreshold>
+      <appender-ref ref="FILE"/>
+    </appender>
 
-  <root level="${log.level}">
-    <appender-ref ref="CONSOLE"/>
-    <appender-ref ref="ASYNC"/>
-  </root>
+    <root level="INFO">
+      <appender-ref ref="ASYNC"/>
+      <appender-ref ref="CONSOLE"/>
+    </root>
+  </springProfile>
 
   <logger name="com.netflix" level="WARN"/>
   <logger name="com.netflix.config.sources.URLConfigurationSource" level="ERROR"/>
