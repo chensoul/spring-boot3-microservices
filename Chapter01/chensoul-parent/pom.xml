@@ -21,7 +21,6 @@
 
     <!-- The spring-boot version should be the same as the parent version above -->
     <spring-boot.version>3.3.4</spring-boot.version>
-    <therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 
     <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
     <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
@@ -55,7 +54,7 @@
             <path>
               <groupId>com.github.therapi</groupId>
               <artifactId>therapi-runtime-javadoc-scribe</artifactId>
-              <version>${therapi-runtime-javadoc.version}</version>
+              <version>0.15.0</version>
             </path>
 
             <path>
@@ -147,8 +146,6 @@
             </rule>
           </rules>
           <excludes>
-            <exclude>**/config/**</exclude>
-            <exclude>**/model/*</exclude>
             <exclude>**/exception/*</exclude>
           </excludes>
         </configuration>
@@ -191,7 +188,7 @@
         <configuration>
           <java>
             <palantirJavaFormat>
-              <version>2.47.0</version>
+              <version>2.50.0</version>
             </palantirJavaFormat>
             <importOrder/>
             <removeUnusedImports/>
