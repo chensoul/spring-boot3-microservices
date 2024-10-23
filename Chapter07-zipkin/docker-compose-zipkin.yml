@@ -1,0 +1,12 @@
+services:
+  zipkin:
+    image: openzipkin/zipkin
+    environment:
+      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+    ports:
+      - "9411:9411"
+    healthcheck:
+      test: [ "CMD", "curl", "-I", "http://zipkin:9411" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10

@@ -84,12 +84,15 @@
 - Chapter06：配置服务 Spring Cloud Config
 - chapter07: 链路追踪 Zipkin
 - chapter08: 监控 Micrometer、Grafana
-- chapter09: 监控 Micrometer、Grafana、Tempo、Loki
-- chapter10: 认证服务 Spring Security OAuth2
-- Chapter11：监控服务 Spring Boot Admin
-- chapter13: Service Mesh
-- chapter13: EFK
-- chapter14: Native
+- chapter09: 监控 Micrometer、Grafana、Tempo
+- chapter10: 监控 Micrometer、Grafana、Tempo、Loki
+- chapter11：ELK
+- chapter12 认证服务 Spring Security OAuth2
+- Chapter13：监控服务 Spring Boot Admin
+- Chapter14：Kubernetes
+- Chapter15：Istio
+- chapter16: Service Mesh
+- chapter17: Native
 
 ## 环境准备
 

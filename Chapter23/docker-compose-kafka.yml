@@ -10,11 +10,7 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      kafka:
-        condition: service_started
+
 
   product-p1:
     image: chensoul/product-service
@@ -27,11 +23,7 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      kafka:
-        condition: service_started
+
 
   recommendation:
     image: chensoul/recommendation-service
@@ -44,11 +36,7 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      kafka:
-        condition: service_started
+
 
   recommendation-p1:
     image: chensoul/recommendation-service
@@ -61,11 +49,7 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      kafka:
-        condition: service_started
+
 
   review:
     image: chensoul/review-service
@@ -81,8 +65,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      kafka:
-        condition: service_started
+
 
   review-p1:
     image: chensoul/review-service
@@ -98,8 +81,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      kafka:
-        condition: service_started
+
 
   product-composite:
     image: chensoul/product-composite-service
@@ -110,8 +92,7 @@ services:
     volumes:
       - ./config-repo:/config-repo
     depends_on:
-      kafka:
-        condition: service_started
+
       authorization:
         condition: service_healthy
 

@@ -12,10 +12,7 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      rabbitmq:
+        rabbitmq:
         condition: service_healthy
 
   product-p1:
@@ -31,10 +28,7 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      rabbitmq:
+        rabbitmq:
         condition: service_healthy
 
   recommendation:
@@ -50,10 +44,7 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      rabbitmq:
+        rabbitmq:
         condition: service_healthy
 
   recommendation-p1:
@@ -69,10 +60,7 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      rabbitmq:
+        rabbitmq:
         condition: service_healthy
 
   review:
