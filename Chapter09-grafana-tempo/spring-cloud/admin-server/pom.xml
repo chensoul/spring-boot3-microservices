@@ -16,7 +16,7 @@
 
     <properties>
         <spring-boot-admin.version>3.3.4</spring-boot-admin.version>
-        <jolokia.version>2.1.0</jolokia.version>
+        <jolokia.version>2.1.1</jolokia.version>
     </properties>
 
     <dependencies>
