@@ -28,5 +28,4 @@ server.port: 8080
 # docker容器中用户无法创建路径，故使用/tmp/logs
 logging.file.path: /tmp/logs/${spring.application.name}
 
-
 spring.data.mongodb.host: mongodb

@@ -1,6 +1,6 @@
 services:
   product:
-    image: chensoul/product-service
+    image: chensoul/sbme-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0
@@ -12,11 +12,9 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-        rabbitmq:
-        condition: service_healthy
 
   product-p1:
-    image: chensoul/product-service
+    image: chensoul/sbme-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1
@@ -28,11 +26,9 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-        rabbitmq:
-        condition: service_healthy
 
   recommendation:
-    image: chensoul/recommendation-service
+    image: chensoul/sbme-recommendation-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0
@@ -44,11 +40,9 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-        rabbitmq:
-        condition: service_healthy
 
   recommendation-p1:
-    image: chensoul/recommendation-service
+    image: chensoul/sbme-recommendation-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1
@@ -60,11 +54,9 @@ services:
       - SPRING_DATA_MONGODB_PASSWORD=${MONGODB_PWD}
     volumes:
       - ./config-repo:/config-repo
-        rabbitmq:
-        condition: service_healthy
 
   review:
-    image: chensoul/review-service
+    image: chensoul/sbme-review-service
 
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
@@ -78,12 +70,10 @@ services:
       - ./config-repo:/config-repo
     depends_on:
       mysql:
-        condition: service_healthy
-      rabbitmq:
         condition: service_healthy
 
   review-p1:
-    image: chensoul/review-service
+    image: chensoul/sbme-review-service
 
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
@@ -98,11 +88,9 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
 
   product-composite:
-    image: chensoul/product-composite-service
+    image: chensoul/sbme-product-composite-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned
@@ -112,13 +100,11 @@ services:
     volumes:
       - ./config-repo:/config-repo
     depends_on:
-      rabbitmq:
-        condition: service_healthy
       authorization:
-        condition: service_healthy
+      condition: service_healthy
 
   mongodb:
-    image: mongo:8
+    image: mongo:8.0.1
     ports:
       - "27017:27017"
     environment:
@@ -160,7 +146,7 @@ services:
       retries: 10
 
   gateway:
-    image: chensoul/gateway
+    image: chensoul/sbme-gateway
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -177,7 +163,7 @@ services:
         condition: service_healthy
 
   authorization:
-    image: chensoul/authorization-server
+    image: chensoul/sbme-authorization-server
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker

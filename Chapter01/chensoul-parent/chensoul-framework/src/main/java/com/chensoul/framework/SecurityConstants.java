@@ -1,9 +1,9 @@
-package com.chensoul.framework.util;
+package com.chensoul.framework;
 
 /**
  * Constants for Spring Security authorities.
  */
-public final class AuthoritiesConstants {
+public final class SecurityConstants {
 
     public static final String ADMIN = "ROLE_ADMIN";
 
@@ -11,5 +11,6 @@ public final class AuthoritiesConstants {
 
     public static final String ANONYMOUS = "ROLE_ANONYMOUS";
 
-    private AuthoritiesConstants() {}
+    private SecurityConstants() {
+    }
 }

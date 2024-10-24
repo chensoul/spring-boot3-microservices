@@ -148,7 +148,7 @@ istioctl version --remote=false
 
 ## 项目构建
 
-首先进入Chaptero1，如何依次运行下面命令构建 api、framework 模块
+以 Chapter01 为例，依次运行下面命令构建 api、framework 模块
 
 ```bash
 cd Chapter01
@@ -178,7 +178,19 @@ mvn -ntp javadoc:javadoc --batch-mode
 
 ## 测试
 
+以 Chapter01 为例，进行测试。
+
+```bash
+cd Chapter01
+```
+
 ### 本地运行服务
+
+先通过 docker 启动基础服务：
+
+```bash
+docker-compose -f docker-compose.yml up -d
+```
 
 通过 Spring Boot Maven 插件运行服务
 
@@ -186,49 +198,28 @@ mvn -ntp javadoc:javadoc --batch-mode
 mvn clean spring-boot:run -DskipTests
 ```
 
-也可以使用调试模型运行
-
-```bash
-mvn spring-boot:run -DskipTests -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
-```
-
 ### 使用 Docker 运行服务
 
 在某个章节的 microservices 目录下面，使用 Maven 插件构建镜像。
 
 ```bash
-cd Chapter01/microservices
+cd microservices
 mvn -ntp spring-boot:build-image -DskipTests
-```
-
-如果想将镜像推送到 docker hub，运行下面命令：
-
-```bash
-mvn spring-boot:build-image -DskipTests \
-  -Ddocker.publishRegistry.username=user \
-  -Ddocker.publishRegistry.password=secret \
-  -Dspring-boot.build-image.publish=true
 ```
 
 在某个章节的根目录下使用 docker 启动服务：
 
 ```bash
-cd Chapter01
-docker-compose -f app.yml up -d
+docker-compose -f docker-compose-app.yml up -d
 ```
 
 ### 使用 K8s 运行服务
 
 ### 使用 Sonar 检测代码质量
 
-你可以使用以下命令启动本地 Sonar 服务器（可通过[http://localhost:9001](http://localhost:9001/)访问）：
+先通过 docker-compose.yml 启动本地 Sonar 服务器（可通过[http://localhost:9001](http://localhost:9001/)访问）：
 
-```bash
-cd Chapter01
-docker compose -f sonar.yml up -d
-```
-
-注意：我们已经关闭了 sonar.yml 中 UI 的强制身份验证重定向，以便在尝试 SonarQube 时获得开箱即用的体验，对于实际用例，请将其重新打开。
+> 注意：我们已经关闭了 sonar.yml 中 UI 的强制身份验证重定向，以便在尝试 SonarQube 时获得开箱即用的体验，对于实际用例，请将其重新打开。
 
 然后，运行 Sonar 分析：
 

@@ -1,32 +1,27 @@
 services:
   grafana:
-    image: grafana/grafana:11.2.2
-    extra_hosts: ['host.docker.internal:host-gateway']
+    image: grafana/grafana:11.3.0
+    extra_hosts: [ 'host.docker.internal:host-gateway' ]
     ports:
-    - "3000:3000"
+      - "3000:3000"
     volumes:
-    - grafana_data:/var/lib/grafana
-    - ./docker/grafana/provisioning/:/etc/grafana/provisioning/
+      - ./docker/grafana/provisioning/:/etc/grafana/provisioning/
     environment:
-    - GF_SECURITY_ADMIN_PASSWORD=admin
-    - GF_SECURITY_ADMIN_USER=admin
-    - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
     depends_on:
-    - prometheus
+      - prometheus
 
   prometheus:
-    image: prom/prometheus:v2.54.1
-    extra_hosts: ['host.docker.internal:host-gateway']
+    image: prom/prometheus:v2.55.0
+    extra_hosts: [ 'host.docker.internal:host-gateway' ]
     ports:
       - "9090:9090"
     volumes:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
     command:
       - --enable-feature=exemplar-storage
       - --config.file=/etc/prometheus/prometheus.yml
 
-volumes:
-  prometheus_data: {}
-  grafana_data: {}
 

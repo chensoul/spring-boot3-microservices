@@ -1,6 +1,6 @@
 
 delete from product;
-delete from  category;
+delete from category;
 
 INSERT INTO category (id, description, name) VALUES (1, 'Computer Keyboards', 'Keyboards');
 

@@ -253,35 +253,19 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>jib-maven-plugin</artifactId>
+            <version>3.4.4</version>
             <configuration>
-              <!--
-              mvn spring-boot:build-image \
-              -Dspring-boot.build-image.imageName=xx \
-              -Dspring-boot.build-image.builder=paketobuildpacks/builder-jammy-full \
-              -Dspring-boot.build-image.publish=true
-              -->
-              <image>
-                <name>${env.USER}/${project.artifactId}</name>
-                <!-- 该镜像包含 curl -->
-                <builder>paketobuildpacks/builder-jammy-full</builder>
-                <env>
-                  <!-- Make sure `mvn spring-boot:build-image` uses the Java version defined in this project -->
-                  <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
-                </env>
-              </image>
-              <docker>
-                <publishRegistry>
-                  <username>${docker.publishRegistry.username}</username>
-                  <password>${docker.publishRegistry.password}</password>
-                </publishRegistry>
-              </docker>
-              <additionalProperties>
-                <java.version>${java.version}</java.version>
-              </additionalProperties>
-              <!--
-              Enable the line below to have remote debugging of your application on port 5005
-              <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
-              -->
+              <to>
+                <image>${env.USER}/sbme-${project.artifactId}</image>
+              </to>
+              <from>
+                <image>eclipse-temurin:21-jre</image>
+              </from>
             </configuration>
           </plugin>
         </plugins>

@@ -1,37 +1,37 @@
 services:
   customer-service:
-    image: chensoul/customer-service
+    image: chensoul/sbme-customer-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   notification-service:
-    image: chensoul/notification-service
+    image: chensoul/sbme-notification-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   order-service:
-    image: chensoul/order-service
+    image: chensoul/sbme-order-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   payment-service:
-    image: chensoul/payment-service
+    image: chensoul/sbme-payment-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   product-service:
-    image: chensoul/product-service
+    image: chensoul/sbme-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
 
   eureka-server:
-    image: chensoul/eureka-server
+    image: chensoul/sbme-eureka-server
     container_name: eureka-server #单节点，需要指定容器名称
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
@@ -45,7 +45,7 @@ services:
       retries: 10
 
   gateway:
-    image: chensoul/gateway
+    image: chensoul/sbme-gateway
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -56,7 +56,7 @@ services:
         condition: service_healthy
 
   authorization:
-    image: chensoul/authorization
+    image: chensoul/sbme-authorization
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -65,7 +65,7 @@ services:
         condition: service_healthy
 
   config-server:
-    image: chensoul/config-server
+    image: chensoul/sbme-config-server
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=native,docker
@@ -80,7 +80,7 @@ services:
       retries: 10
 
   admin-server:
-    image: chensoul/admin-server
+    image: chensoul/sbme-admin-server
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker

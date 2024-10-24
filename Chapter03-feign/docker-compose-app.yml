@@ -1,30 +1,30 @@
 services:
   customer-service:
-    image: chensoul/customer-service
+    image: chensoul/sbme-customer-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   notification-service:
-    image: chensoul/notification-service
+    image: chensoul/sbme-notification-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   order-service:
-    image: chensoul/order-service
+    image: chensoul/sbme-order-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   payment-service:
-    image: chensoul/payment-service
+    image: chensoul/sbme-payment-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   product-service:
-    image: chensoul/product-service
+    image: chensoul/sbme-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker

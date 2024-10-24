@@ -1,6 +1,6 @@
 services:
   product:
-    image: chensoul/product-service
+    image: chensoul/sbme-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
@@ -13,7 +13,7 @@ services:
 
 
   product-p1:
-    image: chensoul/product-service
+    image: chensoul/sbme-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
@@ -26,7 +26,7 @@ services:
 
 
   recommendation:
-    image: chensoul/recommendation-service
+    image: chensoul/sbme-recommendation-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
@@ -39,7 +39,7 @@ services:
 
 
   recommendation-p1:
-    image: chensoul/recommendation-service
+    image: chensoul/sbme-recommendation-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
@@ -52,7 +52,7 @@ services:
 
 
   review:
-    image: chensoul/review-service
+    image: chensoul/sbme-review-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
@@ -67,7 +67,7 @@ services:
 
 
   review-p1:
-    image: chensoul/review-service
+    image: chensoul/sbme-review-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
@@ -82,7 +82,7 @@ services:
 
 
   product-composite:
-    image: chensoul/product-composite-service
+    image: chensoul/sbme-product-composite-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,kafka
@@ -95,7 +95,7 @@ services:
         condition: service_healthy
 
   mongodb:
-    image: mongo:8
+    image: mongo:8.0.1
     ports:
       - "27017:27017"
     environment:
@@ -142,7 +142,7 @@ services:
       - ZOOKEEPER_CLIENT_PORT=2181
 
   gateway:
-    image: chensoul/gateway
+    image: chensoul/sbme-gateway
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -157,7 +157,7 @@ services:
         condition: service_healthy
 
   authorization:
-    image: chensoul/authorization-server
+    image: chensoul/sbme-authorization-server
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
