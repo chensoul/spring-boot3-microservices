@@ -15,17 +15,14 @@ public class PaymentService {
     public Integer createPayment(PaymentRequest request) {
         Payment payment = this.repository.save(this.mapper.toPayment(request));
 
-        this.notificationProducer.sendNotification(
-            new PaymentConfirmation(
+        this.notificationProducer.sendNotification(new PaymentConfirmation(
                 payment.getId(),
                 payment.getOrderId(),
                 payment.getAmount(),
                 payment.getPaymentMethod(),
                 request.customerResponse().firstname(),
                 request.customerResponse().lastname(),
-                request.customerResponse().email()
-            )
-        );
+                request.customerResponse().email()));
 
         return payment.getId();
     }

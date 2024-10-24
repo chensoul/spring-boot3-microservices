@@ -1,6 +1,7 @@
 package com.chensoul.framework.config;
 
 import static com.chensoul.framework.AppConstants.PROFILE_NOT_PROD;
+
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import java.nio.ByteBuffer;
@@ -23,7 +24,7 @@ class OpenApiConfig {
     public ServerBaseUrlCustomizer serverBaseUrlRequestCustomizer() {
         return (serverBaseUrl, request) -> {
             List<String> forwardedPrefix = request.getHeaders().get("X-Forwarded-Prefix");
-            if (forwardedPrefix!=null && forwardedPrefix.size() > 0) {
+            if (forwardedPrefix != null && forwardedPrefix.size() > 0) {
                 return forwardedPrefix.get(0);
             }
             return serverBaseUrl;

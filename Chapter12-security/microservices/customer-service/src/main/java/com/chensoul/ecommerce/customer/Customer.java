@@ -18,22 +18,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Customer {
 
-  @Id
-  private String id;
+    @Id
+    private String id;
 
-  @Indexed(unique = true)
-  private Integer customerId;
+    @Indexed(unique = true)
+    private Integer customerId;
 
-  @Version
-  private Integer version;
+    @Version
+    private Integer version;
 
-  private String firstname;
+    private String firstname;
 
-  private String lastname;
+    private String lastname;
 
-  private String email;
+    private String email;
 
-  private String street;
+    private String street;
 
-  private String zipCode;
+    private String zipCode;
 }

@@ -3,7 +3,6 @@ package com.chensoul.ecommerce.notification;
 import com.chensoul.ecommerce.consumer.NotificationConsumer;
 import com.chensoul.ecommerce.order.OrderConfirmation;
 import com.chensoul.ecommerce.payment.PaymentConfirmation;
-import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +19,16 @@ public class NotificationController {
     private final NotificationConsumer service;
 
     @PostMapping("/payment")
-    public ResponseEntity<Void> consumePaymentSuccessNotifications(@RequestBody @Valid PaymentConfirmation paymentConfirmation) {
+    public ResponseEntity<Void> consumePaymentSuccessNotifications(
+            @RequestBody @Valid PaymentConfirmation paymentConfirmation) {
         this.service.consumePaymentSuccessNotifications(paymentConfirmation);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Void> consumeOrderConfirmationNotifications(@RequestBody @Valid OrderConfirmation orderConfirmation) {
+    public ResponseEntity<Void> consumeOrderConfirmationNotifications(
+            @RequestBody @Valid OrderConfirmation orderConfirmation) {
         this.service.consumeOrderConfirmationNotifications(orderConfirmation);
         return ResponseEntity.ok().build();
     }
-
 }

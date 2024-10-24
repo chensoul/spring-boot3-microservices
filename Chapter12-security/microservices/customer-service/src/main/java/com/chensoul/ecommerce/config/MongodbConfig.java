@@ -24,7 +24,8 @@ public class MongodbConfig {
 
     @EventListener(ContextRefreshedEvent.class)
     public void initIndicesAfterStartup() {
-        MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
+        MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext =
+                mongoTemplate.getConverter().getMappingContext();
         IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
 
         IndexOperations indexOps = mongoTemplate.indexOps(Customer.class);

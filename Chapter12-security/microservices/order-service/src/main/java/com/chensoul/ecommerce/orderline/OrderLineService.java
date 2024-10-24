@@ -1,7 +1,6 @@
 package com.chensoul.ecommerce.orderline;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +17,8 @@ public class OrderLineService {
     }
 
     public List<OrderLineResponse> findAllByOrderId(Integer orderId) {
-        return repository.findAllByOrderId(orderId)
-            .stream()
-            .map(mapper::toOrderLineResponse)
-            .toList();
+        return repository.findAllByOrderId(orderId).stream()
+                .map(mapper::toOrderLineResponse)
+                .toList();
     }
 }

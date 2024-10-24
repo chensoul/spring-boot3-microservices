@@ -1,13 +1,10 @@
 package com.chensoul.ecommerce.product;
 
-import com.chensoul.exception.BusinessException
-
-    ;
+import com.chensoul.framework.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,38 +22,34 @@ public class ProductService {
     }
 
     public ProductResponse findById(Integer id) {
-        return repository.findById(id)
-            .map(mapper::toProductResponse)
-            .orElseThrow(() -> new EntityNotFoundException("Product not found with ID:: " + id));
+        return repository
+                .findById(id)
+                .map(mapper::toProductResponse)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with ID:: " + id));
     }
 
     public List<ProductResponse> findAll() {
-        return repository.findAll()
-            .stream()
-            .map(mapper::toProductResponse)
-            .toList();
+        return repository.findAll().stream().map(mapper::toProductResponse).toList();
     }
 
     @Transactional(rollbackFor = BusinessException.class)
     public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> request) {
-        List<Integer> productIds = request
-            .stream()
-            .map(ProductPurchaseRequest::productId)
-            .toList();
+        List<Integer> productIds =
+                request.stream().map(ProductPurchaseRequest::productId).toList();
         List<Product> storedProducts = repository.findAllByIdInOrderById(productIds);
         if (productIds.size() != storedProducts.size()) {
             throw new BusinessException("One or more products does not exist");
         }
-        List<ProductPurchaseRequest> sortedRequest = request
-            .stream()
-            .sorted(Comparator.comparing(ProductPurchaseRequest::productId))
-            .toList();
+        List<ProductPurchaseRequest> sortedRequest = request.stream()
+                .sorted(Comparator.comparing(ProductPurchaseRequest::productId))
+                .toList();
         List<ProductPurchaseResponse> purchasedProducts = new ArrayList<>();
         for (int i = 0; i < storedProducts.size(); i++) {
             Product product = storedProducts.get(i);
             ProductPurchaseRequest productRequest = sortedRequest.get(i);
             if (product.getAvailableQuantity() < productRequest.quantity()) {
-                throw new BusinessException("Insufficient stock quantity for product with ID:: " + productRequest.productId());
+                throw new BusinessException(
+                        "Insufficient stock quantity for product with ID:: " + productRequest.productId());
             }
             Long newAvailableQuantity = product.getAvailableQuantity() - productRequest.quantity();
             product.setAvailableQuantity(newAvailableQuantity);
@@ -65,5 +58,4 @@ public class ProductService {
         }
         return purchasedProducts;
     }
-
 }

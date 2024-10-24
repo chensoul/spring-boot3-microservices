@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "product-service")
 public interface ProductClient {
-  @PostMapping("/api/v1/products/purchase")
-  List<ProductPurchaseResponse> purchaseProducts(@RequestBody List<ProductPurchaseRequest> requestBody);
+    @PostMapping("/api/v1/products/purchase")
+    List<ProductPurchaseResponse> purchaseProducts(@RequestBody List<ProductPurchaseRequest> requestBody);
 }

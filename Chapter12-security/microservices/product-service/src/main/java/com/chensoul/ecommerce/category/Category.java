@@ -23,17 +23,17 @@ import org.springframework.data.annotation.Version;
 @Entity
 public class Category {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Version
-  private Integer version;
+    @Version
+    private Integer version;
 
-  private String name;
+    private String name;
 
-  private String description;
+    private String description;
 
-  @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-  private List<Product> products;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    private List<Product> products;
 }

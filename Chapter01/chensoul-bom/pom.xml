@@ -12,7 +12,7 @@
   </parent>
 
   <groupId>com.chensoul</groupId>
-  <artifactId>chensoul-parent</artifactId>
+  <artifactId>chensoul-bom</artifactId>
   <packaging>pom</packaging>
   <version>0.0.1-SNAPSHOT</version>
 
@@ -273,7 +273,7 @@
     </profile>
 
     <profile>
-      <id>deploy-github</id>
+      <id>github</id>
       <activation>
         <property>
           <name>github</name>
@@ -283,17 +283,17 @@
       <distributionManagement>
         <snapshotRepository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/chensoul/chensoul-bom/</url>
+          <url>https://maven.pkg.github.com/chensoul/spring-boot-microservices-ecommerce/</url>
         </snapshotRepository>
         <repository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/chensoul/chensoul-bom/</url>
+          <url>https://maven.pkg.github.com/chensoul/spring-boot-microservices-ecommerce/</url>
         </repository>
       </distributionManagement>
     </profile>
 
     <profile>
-      <id>deploy-central</id>
+      <id>ossrh</id>
       <activation>
         <property>
           <name>!github</name>
@@ -302,11 +302,11 @@
       <distributionManagement>
         <snapshotRepository>
           <id>ossrh</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+          <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
           <id>ossrh</id>
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+          <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
       </distributionManagement>
       <build>

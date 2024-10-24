@@ -21,18 +21,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Notification {
 
-  @Id
-  private String id;
+    @Id
+    private String id;
 
-  @Version
-  private Integer version;
+    @Version
+    private Integer version;
 
-  private NotificationType type;
+    private NotificationType type;
 
-  @CreatedDate
-  private LocalDateTime createdDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
 
-  private OrderConfirmation orderConfirmation;
+    private OrderConfirmation orderConfirmation;
 
-  private PaymentConfirmation paymentConfirmation;
+    private PaymentConfirmation paymentConfirmation;
 }

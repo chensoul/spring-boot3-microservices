@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-  List<Product> findAllByIdInOrderById(List<Integer> ids);
+    List<Product> findAllByIdInOrderById(List<Integer> ids);
 }

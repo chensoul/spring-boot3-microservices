@@ -16,48 +16,49 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductController {
 
-  private final ProductService service;
+    private final ProductService service;
 
-  /**
-   * Create a Product
-   *
-   * @param request
-   * @return
-   */
-  @PostMapping
-  public ResponseEntity<Integer> createProduct(@RequestBody @Valid ProductRequest request) {
-    return ResponseEntity.ok(service.createProduct(request));
-  }
+    /**
+     * Create a Product
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping
+    public ResponseEntity<Integer> createProduct(@RequestBody @Valid ProductRequest request) {
+        return ResponseEntity.ok(service.createProduct(request));
+    }
 
-  /**
-   * Purchase Products
-   *
-   * @param request
-   * @return
-   */
-  @PostMapping("/purchase")
-  public ResponseEntity<List<ProductPurchaseResponse>> purchaseProducts(@RequestBody List<ProductPurchaseRequest> request) {
-    return ResponseEntity.ok(service.purchaseProducts(request));
-  }
+    /**
+     * Purchase Products
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/purchase")
+    public ResponseEntity<List<ProductPurchaseResponse>> purchaseProducts(
+            @RequestBody List<ProductPurchaseRequest> request) {
+        return ResponseEntity.ok(service.purchaseProducts(request));
+    }
 
-  /**
-   * Find a Product
-   *
-   * @param productId
-   * @return
-   */
-  @GetMapping("/{productId}")
-  public ResponseEntity<ProductResponse> findById(@PathVariable("productId") Integer productId) {
-    return ResponseEntity.ok(service.findById(productId));
-  }
+    /**
+     * Find a Product
+     *
+     * @param productId
+     * @return
+     */
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductResponse> findById(@PathVariable("productId") Integer productId) {
+        return ResponseEntity.ok(service.findById(productId));
+    }
 
-  /**
-   * Find all Products
-   *
-   * @return
-   */
-  @GetMapping
-  public ResponseEntity<List<ProductResponse>> findAll() {
-    return ResponseEntity.ok(service.findAll());
-  }
+    /**
+     * Find all Products
+     *
+     * @return
+     */
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> findAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
 }

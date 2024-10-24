@@ -11,6 +11,5 @@ public final class SecurityConstants {
 
     public static final String ANONYMOUS = "ROLE_ANONYMOUS";
 
-    private SecurityConstants() {
-    }
+    private SecurityConstants() {}
 }

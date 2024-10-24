@@ -38,47 +38,33 @@ public class OrderService {
         Order order = this.repository.save(mapper.toOrder(request));
 
         for (ProductPurchaseRequest productPurchaseRequest : request.products()) {
-            orderLineService.saveOrderLine(
-                new OrderLineRequest(
-                    null,
-                    order.getId(),
-                    productPurchaseRequest.productId(),
-                    productPurchaseRequest.quantity()
-                )
-            );
+            orderLineService.saveOrderLine(new OrderLineRequest(
+                    null, order.getId(), productPurchaseRequest.productId(), productPurchaseRequest.quantity()));
         }
-        PaymentRequest paymentRequest = new PaymentRequest(null,
-            order.getId(),
-            request.totalAmount(),
-            request.paymentMethod(),
-            customerResponse
-        );
+        PaymentRequest paymentRequest = new PaymentRequest(
+                null, order.getId(), request.totalAmount(), request.paymentMethod(), customerResponse);
         paymentClient.requestOrderPayment(paymentRequest);
 
-        orderProducer.sendNotification(
-            new OrderConfirmation(
+        orderProducer.sendNotification(new OrderConfirmation(
                 order.getId(),
                 order.getTotalAmount(),
                 order.getPaymentMethod(),
                 customerResponse,
-                purchasedProductResponses
-            )
-        );
+                purchasedProductResponses));
 
         return order.getId();
     }
 
     public List<OrderResponse> findAllOrders() {
-        return this.repository.findAll()
-            .stream()
-            .map(this.mapper::fromOrder)
-            .toList();
+        return this.repository.findAll().stream().map(this.mapper::fromOrder).toList();
     }
 
     public OrderResponse findById(Integer id) {
-        return this.repository.findById(id)
-            .map(this.mapper::fromOrder)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("No order found with the provided ID: %d", id)));
+        return this.repository
+                .findById(id)
+                .map(this.mapper::fromOrder)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(String.format("No order found with the provided ID: %d", id)));
     }
 
     public void delete(Integer id) {

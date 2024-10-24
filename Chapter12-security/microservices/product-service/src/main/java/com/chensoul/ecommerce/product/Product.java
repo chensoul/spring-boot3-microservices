@@ -23,22 +23,22 @@ import org.springframework.data.annotation.Version;
 @Entity
 public class Product {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Version
-  private Integer version;
+    @Version
+    private Integer version;
 
-  private String name;
+    private String name;
 
-  private String description;
+    private String description;
 
-  private Long availableQuantity;
+    private Long availableQuantity;
 
-  private BigDecimal price;
+    private BigDecimal price;
 
-  @ManyToOne
-  @JoinColumn(name = "category_id")
-  private Category category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
