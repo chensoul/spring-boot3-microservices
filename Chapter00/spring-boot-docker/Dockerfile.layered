@@ -1,9 +1,9 @@
-FROM eclipse-temurin:21-jre-jammy AS builder
+FROM eclipse-temurin:21.0.5_11-jre-jammy AS builder
 WORKDIR /build
 ADD target/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
-FROM eclipse-temurin:21-jre-jammy
+FROM eclipse-temurin:21.0.5_11-jre-jammy
 WORKDIR /app
 COPY --from=builder /build/dependencies/ ./
 COPY --from=builder /build/spring-boot-loader/ ./
