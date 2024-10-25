@@ -8,8 +8,6 @@ Build resilient and scalable microservices using Spring Cloud, Istio, and Kubern
 
 ![microservices-architecture](./docs/microservices-architecture.jpg)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/chensoul/spring-boot-microservices-ecommerce)
-
 ## Modules
 
 - Chapter00：Docker

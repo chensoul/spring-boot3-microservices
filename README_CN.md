@@ -9,8 +9,6 @@
 
 ![microservices-architecture](./docs/microservices-architecture.jpg)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/chensoul/spring-boot-microservices-ecommerce)
-
 ## 模块
 
 - Chapter00：Docker
