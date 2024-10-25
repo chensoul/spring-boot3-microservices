@@ -46,6 +46,11 @@ spring:
         spring.json.type.mapping: orderConfirmation:com.chensoul.ecommerce.order.OrderConfirmation,paymentConfirmation:com.chensoul.ecommerce.payment.PaymentConfirmation
 
 
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"
+management.endpoint.health.probes.enabled: true
+management.metrics.tags.application: ${spring.application.name}
+
 ---
 spring.config.activate.on-profile: docker
 
