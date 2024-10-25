@@ -1,39 +1,22 @@
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
-# ===================================================================
-
-server.port: 8060
-
 spring.application.name: product-service
+server.port: 8083
+server.shutdown: graceful
+server.forward-headers-strategy: framework
 
-spring.main.allow-bean-definition-overriding: true
+management.info.git.mode: full
+management.endpoints.web.exposure.include: "*"
+management.metrics.tags.application: "${spring.application.name}"
+management.tracing.enabled: false
+management.tracing.sampling.probability: 1.0
 
-spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ecommerce
-    username: user
-    password: pass
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  flyway:
-    baseline-on-migrate: true
-    baseline-version: 0
-  sql:
-    init:
-      mode: always
+spring.datasource.url: jdbc:postgresql://localhost:25432/postgres
+spring.datasource.username: postgres
+spring.datasource.password: postgres
+spring.jpa.open-in-view: false
+
 
 ---
 spring.config.activate.on-profile: docker
 
-server.port: 8080
+spring.datasource.url: jdbc:postgresql://postgres-product:5432/postgres
 
-# docker容器中用户无法创建路径，故使用/tmp/logs
-logging.file.path: /tmp/logs/${spring.application.name}
-
-spring.datasource.url: jdbc:postgresql://postgres:5432/ecommerce

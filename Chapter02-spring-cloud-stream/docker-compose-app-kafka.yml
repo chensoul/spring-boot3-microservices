@@ -1,49 +1,57 @@
 services:
-  customer-service:
-    image: chensoul/sb3m-customer-service
-    environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=docker
-
   notification-service:
-    image: chensoul/sb3m-notification-service
+    image: chensoul/bookstore-notification-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
 
   notification-service-p1:
-    image: chensoul/sb3m-notification-service
+    image: chensoul/bookstore-notification-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
 
   order-service:
-    image: chensoul/sb3m-order-service
+    image: chensoul/bookstore-order-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
 
   order-service-p1:
-    image: chensoul/sb3m-order-service
-    environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
-
-  payment-service:
-    image: chensoul/sb3m-payment-service
-    environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
-
-  payment-service-p1:
-    image: chensoul/sb3m-payment-service
+    image: chensoul/bookstore-order-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
 
   product-service:
-    image: chensoul/sb3m-product-service
+    image: chensoul/bookstore-product-service
+    container_name: product-service
     environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,kafka
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8083:8083"
+    restart: unless-stopped
+    #    depends_on:
+    #      postgres-product:
+    #        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    labels:
+      logging: "promtail"
 
+  bookstore-webapp:
+    image: chensoul/bookstore-webapp
+    container_name: bookstore-webapp
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    labels:
+      logging: "promtail"

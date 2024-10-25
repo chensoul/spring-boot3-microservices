@@ -1,48 +1,33 @@
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
-# ===================================================================
-
-server.port: 8030
-
 spring.application.name: notification-service
+server.port: 8081
+server.shutdown: graceful
 
-spring.main.allow-bean-definition-overriding: true
+notification.order-event-exchange: order-exchange
+notification.new-order-queue: new-order
+notification.delivered-order-queue: delivered-order
+notification.cancelled-order-queue: cancelled-order
+notification.error-order-queue: error-order
+notification.support-email: ichensoul@gmail.com
 
-spring:
-  data:
-    mongodb:
-      username: user
-      password: pass
-      host: localhost
-      port: 27017
-      database: ecommerce
-      authentication-database: admin
-  mail:
-    host: localhost
-    port: 1025
-    username: user
-    password: pass
-    properties:
-      mail:
-        smtp:
-          trust: "*"
-        auth: true
-        starttls:
-          enabled: true
-        connectiontimeout: 5000
-        timeout: 3000
-        writetimeout: 5000
+management.info.git.mode: full
+management.endpoints.web.exposure.include: "*"
+management.metrics.tags.application: "${spring.application.name}"
+management.tracing.enabled: false
+management.tracing.sampling.probability: 1.0
 
 spring.cloud.function.definition: messageProcessor
 
 spring.cloud.stream:
   defaultBinder: rabbit
   default.contentType: application/json
-  bindings.messageProcessor-in-0:
-    destination: notification
-    group: notificationGroup
+  bindings:
+    messageProcessor-in-0:
+      destination: notification
+      group: notificationGroup
+    notification-out-0: # for test
+      destination: notification
+      producer:
+        required-groups: auditGroup
 
 spring.cloud.stream.bindings.messageProcessor-in-0.consumer:
   maxAttempts: 3
@@ -67,19 +52,29 @@ spring.rabbitmq:
   username: guest
   password: guest
 
+spring.mail.host: 127.0.0.1
+spring.mail.port: 1025
+spring.mail.username: PLACEHOLDER
+spring.mail.password: PLACEHOLDER
+spring.mail.properties.mail.smtp.auth: true
+spring.mail.properties.mail.smtp.starttls.enable: true
+
+spring.data.mongodb.host: localhost
+spring.data.mongodb.port: 27017
+spring.data.mongodb.database: mongodb
+spring.data.mongodb.username: user
+spring.data.mongodb.password: pass
+spring.data.mongodb.authentication-database: admin
+
+
 ---
 spring.config.activate.on-profile: docker
 
-server.port: 8080
+spring.rabbitmq.host: rabbitmq
 
-# docker容器中用户无法创建路径，故使用/tmp/logs
-logging.file.path: /tmp/logs/${spring.application.name}
+spring.mail.host: mailhog
 
 spring.data.mongodb.host: mongodb
-
-spring.mail.host: maildev
-
-spring.rabbitmq.host: rabbitmq
 
 spring.cloud.stream.kafka.binder.brokers: kafka
 

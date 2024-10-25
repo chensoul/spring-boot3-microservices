@@ -104,63 +104,12 @@ minikube version | grep "minikube" && \
 istioctl version --remote=false
 ```
 
-## 项目构建
+## 如何运行
 
-以 Chapter01 为例，依次运行下面命令构建 api、framework 模块
-
-```bash
-cd Chapter01
-
-cd api && mvn install -DskipTests && cd ..
-cd framework && mvn install -DskipTests && cd ..
-```
-
-然后，进入某个章节，编译 microservices
-
-```bash
-cd Chapter01/microservices
-mvn clean install
-```
-
-缓存依赖
-
-```bash
-mvn dependency:go-offline
-```
-
-生成 JavaDoc
-
-```bash
-mvn -ntp javadoc:javadoc --batch-mode
-```
-
-## 测试
-
-以 Chapter01 为例，进行测试。
+以 Chapter01 为例，进入 microservices 目录，使用 Maven 插件构建镜像
 
 ```bash
 cd Chapter01
-```
-
-### 本地运行服务
-
-先通过 docker 启动基础服务：
-
-```bash
-docker-compose -f docker-compose.yml up -d
-```
-
-通过 Spring Boot Maven 插件运行服务
-
-```bash
-mvn clean spring-boot:run -DskipTests
-```
-
-### 使用 Docker 运行服务
-
-在某个章节的 microservices 目录下面，使用 Maven 插件构建镜像。
-
-```bash
 cd microservices
 mvn -ntp spring-boot:build-image -DskipTests
 ```
@@ -168,7 +117,8 @@ mvn -ntp spring-boot:build-image -DskipTests
 在某个章节的根目录下使用 docker 启动服务：
 
 ```bash
-docker-compose -f docker-compose-app.yml up -d
+cd Chapter01
+docker-compose -f docker-compose.yml -f docker-compose-app.yml up -d
 ```
 
 ### 使用 K8s 运行服务
@@ -199,7 +149,6 @@ mvn clean verify -DskipTests sonar:sonar -Dsonar.login=admin -Dsonar.password=ad
 源代码：
 
 - https://github.com/chensoul/Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
-- https://github.com/chensoul/spring-boot-microservices
 - https://github.com/chensoul/spring-boot-3-microservices-course
 - https://github.com/in28minutes/spring-microservices-v3
 - https://github.com/ali-bouali/microservices-full-code

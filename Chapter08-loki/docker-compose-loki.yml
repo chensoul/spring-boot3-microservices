@@ -1,0 +1,19 @@
+services:
+  zipkin:
+    image: openzipkin/zipkin:3.4.2
+    environment:
+      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+    ports:
+      - "9411:9411"
+    healthcheck:
+      test: [ "CMD", "curl", "-I", "http://zipkin:9411" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  loki:
+    image: grafana/loki:main
+    container_name: loki
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    ports:
+      - "3100:3100"

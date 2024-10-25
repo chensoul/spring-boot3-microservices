@@ -39,15 +39,12 @@ services:
       timeout: 2s
       retries: 10
 
-  maildev:
-    image: maildev/maildev
-    environment:
-      TZ: Asia/Shanghai
-      MAILDEV_OUTGOING_USER: user
-      MAILDEV_OUTGOING_PASS: pass
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: mailhog
     ports:
-      - "1080:1080"
       - "1025:1025"
+      - "8025:8025"
 
   kafka:
     image: confluentinc/cp-kafka:7.7.1

@@ -1,31 +1,75 @@
 services:
-  customer-service:
-    image: chensoul/sb3m-customer-service
-    environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=docker
-
   notification-service:
-    image: chensoul/sb3m-notification-service
+    image: chensoul/bookstore-notification-service
+    container_name: notification-service
     environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    #    depends_on:
+    #      mongodb:
+    #        condition: service_healthy
+    #      rabbitmq:
+    #        condition: service_healthy
+    #      mailhog:
+    #        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    labels:
+      logging: "promtail"
 
   order-service:
-    image: chensoul/sb3m-order-service
+    image: chensoul/bookstore-order-service
+    container_name: order-service
     environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
-
-  payment-service:
-    image: chensoul/sb3m-payment-service
-    environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+    #    depends_on:
+    #      postgres-order:
+    #        condition: service_healthy
+    #      rabbitmq:
+    #        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    labels:
+      logging: "promtail"
 
   product-service:
-    image: chensoul/sb3m-product-service
+    image: chensoul/bookstore-product-service
+    container_name: product-service
     environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8083:8083"
+    restart: unless-stopped
+    #    depends_on:
+    #      postgres-product:
+    #        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    labels:
+      logging: "promtail"
 
+  bookstore-webapp:
+    image: chensoul/bookstore-webapp
+    container_name: bookstore-webapp
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    labels:
+      logging: "promtail"

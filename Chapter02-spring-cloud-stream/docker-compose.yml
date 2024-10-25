@@ -1,36 +1,49 @@
 services:
-  sonar:
-    image: sonarqube
+  postgres-order:
+    image: postgres:17-alpine
+    container_name: postgres-order
     environment:
-      - SONAR_FORCEAUTHENTICATION=false
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     ports:
-      - "9001:9000"
-      - "9000:9000"
-
-  postgres:
-    image: postgres:17
-    environment:
-      POSTGRES_DB: ecommerce
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_HOST_AUTH_METHOD: trust
-      PGDATA: /data/postgres
-    volumes:
-      - postgres:/data/postgres
-    ports:
-      - "5432:5432"
+      - "15432:5432"
     healthcheck:
-      test: [ 'CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}' ]
-      interval: 5s
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+
+  postgres-product:
+    image: postgres:17-alpine
+    container_name: postgres-product
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "25432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 500m
 
   mongodb:
     image: mongo:8.0.1
+    container_name: mongodb
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_DATABASE: ecommerce
+      MONGO_INITDB_DATABASE: mongodb
       MONGO_INITDB_ROOT_USERNAME: user
       MONGO_INITDB_ROOT_PASSWORD: pass
     healthcheck:
@@ -39,15 +52,29 @@ services:
       timeout: 2s
       retries: 10
 
-  maildev:
-    image: maildev/maildev
-    environment:
-      TZ: Asia/Shanghai
-      MAILDEV_OUTGOING_USER: user
-      MAILDEV_OUTGOING_PASS: pass
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: mailhog
     ports:
-      - "1080:1080"
       - "1025:1025"
+      - "8025:8025"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.2
+    command: [ 'start-dev', '--import-realm', '--http-port=9191' ]
+    container_name: keycloak
+    hostname: keycloak
+    volumes:
+      - ./docker/keycloak:/opt/keycloak/data/import
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin1234
+    ports:
+      - "9191:9191"
+    deploy:
+      resources:
+        limits:
+          memory: 2gb
 
   kafka:
     image: confluentinc/cp-kafka:7.7.1
@@ -74,19 +101,20 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   rabbitmq:
-    image: rabbitmq:4-management-alpine
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     ports:
       - "5672:5672"
       - "15672:15672"
-    volumes:
-      - rabbitmq:/var/lib/rabbitmq
     healthcheck:
-      test: [ "CMD", "rabbitmqctl", "status" ]
-      interval: 5s
-      timeout: 2s
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 30s
+      timeout: 30s
       retries: 10
-
-volumes:
-  postgres:
-  mongo:
-  rabbitmq:
+    deploy:
+      resources:
+        limits:
+          memory: 500m

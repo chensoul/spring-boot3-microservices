@@ -1,56 +1,56 @@
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
-# ===================================================================
-
-server.port: 8040
-
 spring.application.name: order-service
+server.port: 8082
+server.shutdown: graceful
+server.forward-headers-strategy: framework
+spring.mvc.problemdetails.enabled: true
 
-spring.main.allow-bean-definition-overriding: true
+order.product-service-url: http://localhost:8083
+order.order-event-exchange: order-exchange
+order.new-order-queue: new-order
+order.delivered-order-queue: delivered-order
+order.cancelled-order-queue: cancelled-order
+order.error-order-queue: error-order
+order.publish-order-events-job-cron: "*/5 * * * * *"
+order.new-order-job-cron: "*/10 * * * * *"
 
-spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ecommerce
-    username: user
-    password: pass
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties:
-        spring.json.type.mapping: orderConfirmation:com.chensoul.ecommerce.order.OrderConfirmation
+management.info.git.mode: full
+management.endpoints.web.exposure.include: "*"
+management.metrics.tags.application: "${spring.application.name}"
+management.tracing.enabled: false
+management.tracing.sampling.probability: 1.0
 
-application:
-  config:
-    customer-url: http://localhost:8020/api/v1/customers
-    payment-url: http://localhost:8050/api/v1/payments
-    product-url: http://localhost:8060/api/v1/products
-    notification-url: http://localhost:8030/api/v1/notifications
+OAUTH2_SERVER_URL: http://localhost:9191
+REALM_URL: ${OAUTH2_SERVER_URL}/realms/bookstore
+spring.security.oauth2.resourceserver.jwt.issuer-uri: ${REALM_URL}
+
+spring.datasource.url: jdbc:postgresql://localhost:15432/postgres
+spring.datasource.username: postgres
+spring.datasource.password: postgres
+spring.jpa.open-in-view: false
+spring.jpa.show-sql: true
+
+spring.rabbitmq.host: localhost
+spring.rabbitmq.port: 5672
+spring.rabbitmq.username: guest
+spring.rabbitmq.password: guest
+
+resilience4j.retry.backends.product-service.max-attempts: 2
+resilience4j.retry.backends.product-service.wait-duration: 1s
+resilience4j.circuitbreaker.backends.product-service.sliding-window-type: COUNT_BASED
+resilience4j.circuitbreaker.backends.product-service.sliding-window-size: 6
+resilience4j.circuitbreaker.backends.product-service.minimum-number-of-calls: 4
+resilience4j.circuitbreaker.backends.product-service.wait-duration-in-open-state: 20s
+resilience4j.circuitbreaker.backends.product-service.permitted-number-of-calls-in-half-open-state: 2
+resilience4j.circuitbreaker.backends.product-service.failure-rate-threshold: 50
+
 
 ---
 spring.config.activate.on-profile: docker
 
-server.port: 8080
+order.product-service-url: http://product-service:8083
 
-# docker容器中用户无法创建路径，故使用/tmp/logs
-logging.file.path: /tmp/logs/${spring.application.name}
+OAUTH2_SERVER_URL: http://keycloak:9191
 
-spring.datasource.url: jdbc:postgresql://postgres:5432/ecommerce
+spring.datasource.url: jdbc:postgresql://postgres-order:5432/postgres
 
-spring.kafka.consumer.bootstrap-servers: kafka:9092
-
-application:
-  config:
-    customer-url: http://customer-service:8080/api/v1/customers
-    payment-url: http://payment-service:8080/api/v1/payments
-    product-url: http://product-service:8080/api/v1/products
-    notification-url: http://notification-service:8080/api/v1/notifications
+spring.data.mongodb.host: mongodb

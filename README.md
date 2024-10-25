@@ -67,7 +67,6 @@ Video：
 Code：
 
 - https://github.com/chensoul/Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
-- https://github.com/chensoul/spring-boot-microservices
 - https://github.com/chensoul/spring-boot-3-microservices-course
 - https://github.com/in28minutes/spring-microservices-v3
 - https://github.com/ali-bouali/microservices-full-code

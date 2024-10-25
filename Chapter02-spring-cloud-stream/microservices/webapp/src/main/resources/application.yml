@@ -1,0 +1,36 @@
+spring.application.name: bookstore-webapp
+server.port: 8080
+server.shutdown: graceful
+spring.mvc.problemdetails.enabled: true
+
+bookstore.product-url: http://localhost:8083
+bookstore.order-url: http://localhost:8082
+
+management.info.git.mode: full
+management.endpoints.web.exposure.include: "*"
+management.metrics.tags.application: "${spring.application.name}"
+management.tracing.enabled: false
+management.tracing.sampling.probability: 1.0
+
+OAUTH2_SERVER_URL: http://localhost:9191
+REALM_URL: "${OAUTH2_SERVER_URL}/realms/bookstore"
+spring.security.oauth2.client.registration.bookstore-webapp.client-id: bookstore-webapp
+spring.security.oauth2.client.registration.bookstore-webapp.client-secret: P1sibsIrELBhmvK18BOzw1bUl96DcP2z
+spring.security.oauth2.client.registration.bookstore-webapp.authorization-grant-type: authorization_code
+spring.security.oauth2.client.registration.bookstore-webapp.scope: openid, profile
+spring.security.oauth2.client.registration.bookstore-webapp.redirect-uri: "${baseUrl}/login/oauth2/code/bookstore-webapp"
+spring.security.oauth2.client.provider.bookstore-webapp.issuer-uri: "${REALM_URL}"
+#spring.security.oauth2.client.provider.bookstore-webapp.authorization-uri: ${REALM_URL}/protocol/openid-connect/auth
+#spring.security.oauth2.client.provider.bookstore-webapp.token-uri: ${REALM_URL}/protocol/openid-connect/token
+#spring.security.oauth2.client.provider.bookstore-webapp.jwk-set-uri: ${REALM_URL}/protocol/openid-connect/certs
+#spring.security.oauth2.client.provider.bookstore-webapp.user-info-uri: ${REALM_URL}/protocol/openid-connect/userinfo
+
+
+
+---
+spring.config.activate.on-profile: docker
+
+bookstore.product-url: http://product-service:8083
+bookstore.order-url: http://order-service:8082
+
+OAUTH2_SERVER_URL: http://keycloak:9191

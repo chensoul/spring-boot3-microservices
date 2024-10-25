@@ -1,0 +1,52 @@
+spring.application.name: notification-service
+server.port: 8081
+server.shutdown: graceful
+
+notification.order-event-exchange: order-exchange
+notification.new-order-queue: new-order
+notification.delivered-order-queue: delivered-order
+notification.cancelled-order-queue: cancelled-order
+notification.error-order-queue: error-order
+notification.support-email: ichensoul@gmail.com
+
+management.info.git.mode: full
+management.endpoints.web.exposure.include: "*"
+management.metrics.tags.application: "${spring.application.name}"
+management.tracing.enabled: false
+management.tracing.sampling.probability: 1.0
+
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: notificationGroup
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: event:com.chensoul.bookstore.notification.domain.model.OrderCreatedEvent
+
+spring.mail.host: 127.0.0.1
+spring.mail.port: 1025
+spring.mail.username: PLACEHOLDER
+spring.mail.password: PLACEHOLDER
+spring.mail.properties.mail.smtp.auth: true
+spring.mail.properties.mail.smtp.starttls.enable: true
+
+spring.data.mongodb.host: localhost
+spring.data.mongodb.port: 27017
+spring.data.mongodb.database: mongodb
+spring.data.mongodb.username: user
+spring.data.mongodb.password: pass
+spring.data.mongodb.authentication-database: admin
+
+
+---
+spring.config.activate.on-profile: docker
+
+spring.rabbitmq.host: rabbitmq
+
+spring.mail.host: mailhog
+
+spring.data.mongodb.host: mongodb

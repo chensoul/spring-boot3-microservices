@@ -24,7 +24,7 @@ class EurekaApplicationTests {
     }
 
     @Test
-    void catalogLoads() {
+    void productLoads() {
         String expectedReponseBody = "{\"applications\":{\"versions__delta\":\"1\",\"apps__hashcode\":\"\",\"application\":[]}}";
         ResponseEntity<String> entity = testRestTemplate.getForEntity("/eureka/apps", String.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
