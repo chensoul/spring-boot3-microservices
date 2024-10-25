@@ -45,14 +45,15 @@ Build resilient and scalable microservices using Spring Cloud, Istio, and Kubern
 * Creating Aggregated Swagger Documentation at API Gateway
 * Database Persistence using Spring Data JPA, MySQL, Mongodb, Flyway
 * Distributed Tracing using Zipkin
-* Event Driven Async Communication using Spring Kafka and avro
+* Distributed Logging using ELK, Loki
+* Event Driven Async Communication using Spring Kafka, RabbitMQ, ActiveMQ, Spring Cloud Stream
 * Implementing API Gateway using Spring Cloud Gateway
 * Implementing Resiliency using Resilience4j
 * Using WebClient, Declarative HTTP Interfaces to invoke other APIs
 * Local Development Setup using Docker, Docker Compose and Testcontainers
-* Monitoring & Observability using Grafana, Prometheus, Loki, Tempo
+* Monitoring & Observability using Grafana, Prometheus, Tempo
 * Testing using JUnit 5, RestAssured, Testcontainers, Awaitility, WireMock
-* Deployment to Kubernetes using Kind
+* Deployment to Kubernetes using Kind, Helm
 
 ## Application Architecture
 
@@ -64,3 +65,21 @@ Build resilient and scalable microservices using Spring Cloud, Istio, and Kubern
 - Install [Docker](https://www.docker.com/). Recommend using [OrbStack](https://orbstack.dev/) for Macos.
 - Install [IntelliJ](https://www.jetbrains.com/idea) IDEA or any of your favorite IDE
 - Install [Postman](https://www.postman.com/) or any REST Client
+
+## References
+
+Video：
+
+- [Mastering Microservices: Spring boot, Spring Cloud and Keycloak In 7 Hours](https://www.youtube.com/watch?v=jdeSV0GRvwI)
+- [Distributed version of the Spring PetClinic Sample Application built with Spring Cloud and Spring AI](https://github.com/odedia/spring-boot-microservices-ecommerce)
+- [Spring Boot 3 Microservices with Kubernetes and Angular Complete Course in 7 Hours](https://www.youtube.com/watch?v=yn_stY3HCr8)
+
+Code：
+
+- https://github.com/chensoul/Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
+- https://github.com/chensoul/spring-boot-microservices
+- https://github.com/chensoul/spring-boot-3-microservices-course
+- https://github.com/in28minutes/spring-microservices-v3
+- https://github.com/ali-bouali/microservices-full-code
+- https://github.com/jhipster/jhipster-lite
+- https://github.com/sivaprasadreddy/spring-boot-microservices-course

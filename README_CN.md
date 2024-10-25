@@ -200,17 +200,13 @@ mvn clean verify -DskipTests sonar:sonar -Dsonar.login=admin -Dsonar.password=ad
 
 ## 参考
 
-### 视频
-
-以下是介绍微服务项目的视频：
+视频：
 
 - [Mastering Microservices: Spring boot, Spring Cloud and Keycloak In 7 Hours](https://www.youtube.com/watch?v=jdeSV0GRvwI)
 - [Distributed version of the Spring PetClinic Sample Application built with Spring Cloud and Spring AI](https://github.com/odedia/spring-boot-microservices-ecommerce)
 - [Spring Boot 3 Microservices with Kubernetes and Angular Complete Course in 7 Hours](https://www.youtube.com/watch?v=yn_stY3HCr8)
 
-### 源代码
-
-以下是 github 上微服务项目源代码：
+源代码：
 
 - https://github.com/chensoul/Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
 - https://github.com/chensoul/spring-boot-microservices
