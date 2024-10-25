@@ -7,6 +7,8 @@
 使用 Spring Cloud、Istio 和 Kubernetes 构建的一个电商 [微服务](http://www.martinfowler.com/articles/microservices.html)
 项目。
 
+![microservices-architecture](./docs/microservices-architecture.jpg)
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/chensoul/spring-boot-microservices-ecommerce)
 
 ## 模块
@@ -103,10 +105,6 @@ kubectl version --client -o json | jq -r .clientVersion.gitVersion && \
 minikube version | grep "minikube" && \
 istioctl version --remote=false
 ```
-
-## 应用架构
-
-![microservices-architecture](./docs/microservices-architecture.jpg)
 
 ## 项目构建
 

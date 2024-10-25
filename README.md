@@ -6,6 +6,8 @@
 
 Build resilient and scalable microservices using Spring Cloud, Istio, and Kubernetes.
 
+![microservices-architecture](./docs/microservices-architecture.jpg)
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/chensoul/spring-boot-microservices-ecommerce)
 
 ## Modules
@@ -48,10 +50,6 @@ Build resilient and scalable microservices using Spring Cloud, Istio, and Kubern
 * Monitoring & Observability using Grafana, Prometheus, Tempo
 * Testing using JUnit 5, RestAssured, Testcontainers, Awaitility, WireMock
 * Deployment to Kubernetes using Kind, Helm
-
-## Application Architecture
-
-![microservices-architecture](./docs/microservices-architecture.jpg)
 
 ## Local Development Setup
 
