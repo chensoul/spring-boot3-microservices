@@ -1,4 +1,4 @@
-![video_spider](https://socialify.git.ci/chensoul/spring-boot-microservices-ecommerce/image?forks=1&issues=1&language=1&name=1&owner=1&stargazers=1&theme=Light)
+![video_spider](https://socialify.git.ci/chensoul/spring-boot3-microservices/image?forks=1&issues=1&language=1&name=1&owner=1&stargazers=1&theme=Light)
 
 <p align="center">
 <a href="README.md">English Documentation</a>
@@ -193,7 +193,7 @@ mvn clean verify -DskipTests sonar:sonar -Dsonar.login=admin -Dsonar.password=ad
 视频：
 
 - [Mastering Microservices: Spring boot, Spring Cloud and Keycloak In 7 Hours](https://www.youtube.com/watch?v=jdeSV0GRvwI)
-- [Distributed version of the Spring PetClinic Sample Application built with Spring Cloud and Spring AI](https://github.com/odedia/spring-boot-microservices-ecommerce)
+- [Distributed version of the Spring PetClinic Sample Application built with Spring Cloud and Spring AI](https://github.com/odedia/spring-boot3-microservices)
 - [Spring Boot 3 Microservices with Kubernetes and Angular Complete Course in 7 Hours](https://www.youtube.com/watch?v=yn_stY3HCr8)
 
 源代码：

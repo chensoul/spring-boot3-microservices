@@ -22,7 +22,7 @@ spec:
           effect: NoSchedule
       containers:
         - name: fluentd
-          image: chensoul/sbme-fluentd:v1
+          image: chensoul/sb3m-fluentd:v1
           env:
             - name: FLUENT_ELASTICSEARCH_HOST
               value: "elasticsearch.logging"

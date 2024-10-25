@@ -1,36 +1,36 @@
 services:
   customer-service:
-    image: chensoul/sbme-customer-service
+    image: chensoul/sb3m-customer-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   notification-service:
-    image: chensoul/sbme-notification-service
+    image: chensoul/sb3m-notification-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   order-service:
-    image: chensoul/sbme-order-service
+    image: chensoul/sb3m-order-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   payment-service:
-    image: chensoul/sbme-payment-service
+    image: chensoul/sb3m-payment-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   product-service:
-    image: chensoul/sbme-product-service
+    image: chensoul/sb3m-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   eureka-server:
-    image: chensoul/sbme-eureka-server
+    image: chensoul/sb3m-eureka-server
     container_name: eureka-server #单节点，需要指定容器名称
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
@@ -44,7 +44,7 @@ services:
       retries: 10
 
   gateway:
-    image: chensoul/sbme-gateway
+    image: chensoul/sb3m-gateway
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -55,7 +55,7 @@ services:
         condition: service_healthy
 
   authorization:
-    image: chensoul/sbme-authorization
+    image: chensoul/sb3m-authorization
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -64,7 +64,7 @@ services:
         condition: service_healthy
 
   config-server:
-    image: chensoul/sbme-config-server
+    image: chensoul/sb3m-config-server
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=native,docker
@@ -79,7 +79,7 @@ services:
       retries: 10
 
   admin-server:
-    image: chensoul/sbme-admin-server
+    image: chensoul/sb3m-admin-server
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker

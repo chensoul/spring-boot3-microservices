@@ -1,6 +1,6 @@
 services:
   product:
-    image: chensoul/sbme-product-service
+    image: chensoul/sb3m-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -14,7 +14,7 @@ services:
       - ./config-repo:/config-repo
 
   recommendation:
-    image: chensoul/sbme-recommendation-service
+    image: chensoul/sb3m-recommendation-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -28,7 +28,7 @@ services:
       - ./config-repo:/config-repo
 
   review:
-    image: chensoul/sbme-review-service
+    image: chensoul/sb3m-review-service
 
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
@@ -45,7 +45,7 @@ services:
         condition: service_healthy
 
   product-composite:
-    image: chensoul/sbme-product-composite-service
+    image: chensoul/sb3m-product-composite-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -101,7 +101,7 @@ services:
       retries: 10
 
   gateway:
-    image: chensoul/sbme-gateway
+    image: chensoul/sb3m-gateway
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
@@ -118,7 +118,7 @@ services:
         condition: service_healthy
 
   authorization:
-    image: chensoul/sbme-authorization-server
+    image: chensoul/sb3m-authorization-server
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker

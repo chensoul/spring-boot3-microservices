@@ -261,7 +261,7 @@
             <version>3.4.4</version>
             <configuration>
               <to>
-                <image>${env.USER}/sbme-${project.artifactId}</image>
+                <image>${env.USER}/sb3m-${project.artifactId}</image>
               </to>
               <from>
                 <image>eclipse-temurin:21-jre</image>
@@ -283,11 +283,11 @@
       <distributionManagement>
         <snapshotRepository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/chensoul/spring-boot-microservices-ecommerce/</url>
+          <url>https://maven.pkg.github.com/chensoul/spring-boot3-microservices/</url>
         </snapshotRepository>
         <repository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/chensoul/spring-boot-microservices-ecommerce/</url>
+          <url>https://maven.pkg.github.com/chensoul/spring-boot3-microservices/</url>
         </repository>
       </distributionManagement>
     </profile>

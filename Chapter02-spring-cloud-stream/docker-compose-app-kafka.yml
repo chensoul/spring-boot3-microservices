@@ -1,48 +1,48 @@
 services:
   customer-service:
-    image: chensoul/sbme-customer-service
+    image: chensoul/sb3m-customer-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker
 
   notification-service:
-    image: chensoul/sbme-notification-service
+    image: chensoul/sb3m-notification-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
 
   notification-service-p1:
-    image: chensoul/sbme-notification-service
+    image: chensoul/sb3m-notification-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
 
   order-service:
-    image: chensoul/sbme-order-service
+    image: chensoul/sb3m-order-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
 
   order-service-p1:
-    image: chensoul/sbme-order-service
+    image: chensoul/sb3m-order-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
 
   payment-service:
-    image: chensoul/sbme-payment-service
+    image: chensoul/sb3m-payment-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
 
   payment-service-p1:
-    image: chensoul/sbme-payment-service
+    image: chensoul/sb3m-payment-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
 
   product-service:
-    image: chensoul/sbme-product-service
+    image: chensoul/sb3m-product-service
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,kafka
