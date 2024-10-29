@@ -2,123 +2,123 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.4</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
-
-  <groupId>com.chensoul.bookstore</groupId>
-  <artifactId>microservices</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-
-  <properties>
-    <java.version>21</java.version>
-
-    <spring-cloud.version>2023.0.3</spring-cloud.version>
-
-    <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
-    <therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
-
-    <mapstruct.version>1.6.2</mapstruct.version>
-  </properties>
-
-  <modules>
-    <module>product-composite-service</module>
-    <module>product-service</module>
-    <module>recommendation-service</module>
-    <module>review-service</module>
-  </modules>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.springdoc</groupId>
-        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        <version>${springdoc-openapi.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.therapi</groupId>
-        <artifactId>therapi-runtime-javadoc</artifactId>
-        <version>${therapi-runtime-javadoc.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.mapstruct</groupId>
-        <artifactId>mapstruct</artifactId>
-        <version>${mapstruct.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${lombok.version}</version>
-            </path>
-
-            <!-- https://springdoc.org/#javadoc-support -->
-            <path>
-              <groupId>com.github.therapi</groupId>
-              <artifactId>therapi-runtime-javadoc-scribe</artifactId>
-              <version>${therapi-runtime-javadoc.version}</version>
-            </path>
-
-            <path>
-              <groupId>org.mapstruct</groupId>
-              <artifactId>mapstruct-processor</artifactId>
-              <version>${mapstruct.version}</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-
-      <plugin>
+    <parent>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <image>
-            <name>chensoul/${project.artifactId}</name>
-            <env>
-              <!-- Make sure `mvn spring-boot:build-image` uses the Java version defined in this project -->
-              <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
-            </env>
-          </image>
-          <docker>
-            <publishRegistry>
-              <username>${docker.publishRegistry.username}</username>
-              <password>${docker.publishRegistry.password}</password>
-            </publishRegistry>
-          </docker>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.chensoul.bookstore</groupId>
+    <artifactId>microservices</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>21</java.version>
+
+        <spring-cloud.version>2023.0.3</spring-cloud.version>
+
+        <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
+        <therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
+
+        <mapstruct.version>1.6.2</mapstruct.version>
+    </properties>
+
+    <modules>
+        <module>product-composite-service</module>
+        <module>product-service</module>
+        <module>recommendation-service</module>
+        <module>review-service</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.therapi</groupId>
+                <artifactId>therapi-runtime-javadoc</artifactId>
+                <version>${therapi-runtime-javadoc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+
+                        <!-- https://springdoc.org/#javadoc-support -->
+                        <path>
+                            <groupId>com.github.therapi</groupId>
+                            <artifactId>therapi-runtime-javadoc-scribe</artifactId>
+                            <version>${therapi-runtime-javadoc.version}</version>
+                        </path>
+
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>chensoul/${project.artifactId}</name>
+                        <env>
+                            <!-- Make sure `mvn spring-boot:build-image` uses the Java version defined in this project -->
+                            <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
+                        </env>
+                    </image>
+                    <docker>
+                        <publishRegistry>
+                            <username>${docker.publishRegistry.username}</username>
+                            <password>${docker.publishRegistry.password}</password>
+                        </publishRegistry>
+                    </docker>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
