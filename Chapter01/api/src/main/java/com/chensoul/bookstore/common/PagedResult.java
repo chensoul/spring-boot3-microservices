@@ -11,4 +11,5 @@ public record PagedResult<T>(
         @JsonProperty("isFirst") boolean isFirst,
         @JsonProperty("isLast") boolean isLast,
         @JsonProperty("hasNext") boolean hasNext,
-        @JsonProperty("hasPrevious") boolean hasPrevious) {}
+        @JsonProperty("hasPrevious") boolean hasPrevious) {
+}

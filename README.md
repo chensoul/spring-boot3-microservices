@@ -10,13 +10,12 @@ Build resilient and scalable microservices using Spring Cloud, Istio, and Kubern
 
 ## Modules
 
-- Chapter00：Docker
 - Chapter01：Restful接口、持久化、SpringDoc OpenAPI
 - Chapter02：异步通信
-  - Chapter02-activemq
-  - Chapter02-kafka
-  - Chapter02-rabbitmq
-  - Chapter02-spring-cloud-stream
+    - Chapter02-activemq
+    - Chapter02-kafka
+    - Chapter02-rabbitmq
+    - Chapter02-spring-cloud-stream
 - Chapter03：OpenFeign
 - Chapter04：服务发现 Eureka
 - Chapter05：服务网关 Spring Cloud Gateway

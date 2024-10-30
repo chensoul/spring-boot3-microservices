@@ -1,5 +1,10 @@
 package com.chensoul.bookstore.notification.event;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+
 import com.chensoul.bookstore.event.Event;
 import com.chensoul.bookstore.notification.AbstractIT;
 import com.chensoul.bookstore.notification.ApplicationProperties;
@@ -15,11 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
@@ -43,11 +44,12 @@ class OrderEventHandlerTests extends AbstractIT {
         String orderNumber = UUID.randomUUID().toString();
 
         OrderCreatedEvent payload = new OrderCreatedEvent(
-            UUID.randomUUID().toString(), orderNumber, Set.of(), customer, address, LocalDateTime.now());
+                UUID.randomUUID().toString(), orderNumber, Set.of(), customer, address, LocalDateTime.now());
 
-        Message message = MessageBuilder.withPayload(new Event(OrderEventType.ORDER_CREATED, payload.eventId(), payload))
-            .setHeader("partitionKey", payload.eventId())
-            .build();
+        Message message = MessageBuilder.withPayload(
+                        new Event(OrderEventType.ORDER_CREATED, payload.eventId(), payload))
+                .setHeader("partitionKey", payload.eventId())
+                .build();
 
         streamBridge.send("notification-out-0", message);
 
@@ -61,11 +63,12 @@ class OrderEventHandlerTests extends AbstractIT {
         String orderNumber = UUID.randomUUID().toString();
 
         var payload = new OrderDeliveredEvent(
-            UUID.randomUUID().toString(), orderNumber, Set.of(), customer, address, LocalDateTime.now());
+                UUID.randomUUID().toString(), orderNumber, Set.of(), customer, address, LocalDateTime.now());
 
-        Message message = MessageBuilder.withPayload(new Event(OrderEventType.ORDER_DELIVERED, payload.eventId(), payload))
-            .setHeader("partitionKey", payload.eventId())
-            .build();
+        Message message = MessageBuilder.withPayload(
+                        new Event(OrderEventType.ORDER_DELIVERED, payload.eventId(), payload))
+                .setHeader("partitionKey", payload.eventId())
+                .build();
 
         streamBridge.send("notification-out-0", message);
 
@@ -79,17 +82,18 @@ class OrderEventHandlerTests extends AbstractIT {
         String orderNumber = UUID.randomUUID().toString();
 
         var payload = new OrderCancelledEvent(
-            UUID.randomUUID().toString(),
-            orderNumber,
-            Set.of(),
-            customer,
-            address,
-            "test cancel reason",
-            LocalDateTime.now());
+                UUID.randomUUID().toString(),
+                orderNumber,
+                Set.of(),
+                customer,
+                address,
+                "test cancel reason",
+                LocalDateTime.now());
 
-        Message message = MessageBuilder.withPayload(new Event(OrderEventType.ORDER_CANCELLED, payload.eventId(), payload))
-            .setHeader("partitionKey", payload.eventId())
-            .build();
+        Message message = MessageBuilder.withPayload(
+                        new Event(OrderEventType.ORDER_CANCELLED, payload.eventId(), payload))
+                .setHeader("partitionKey", payload.eventId())
+                .build();
 
         streamBridge.send("notification-out-0", message);
 
@@ -103,17 +107,18 @@ class OrderEventHandlerTests extends AbstractIT {
         String orderNumber = UUID.randomUUID().toString();
 
         var payload = new OrderErrorEvent(
-            UUID.randomUUID().toString(),
-            orderNumber,
-            Set.of(),
-            customer,
-            address,
-            "test error reason",
-            LocalDateTime.now());
+                UUID.randomUUID().toString(),
+                orderNumber,
+                Set.of(),
+                customer,
+                address,
+                "test error reason",
+                LocalDateTime.now());
 
-        Message message = MessageBuilder.withPayload(new Event(OrderEventType.ORDER_PROCESSING_FAILED, payload.eventId(), payload))
-            .setHeader("partitionKey", payload.eventId())
-            .build();
+        Message message = MessageBuilder.withPayload(
+                        new Event(OrderEventType.ORDER_PROCESSING_FAILED, payload.eventId(), payload))
+                .setHeader("partitionKey", payload.eventId())
+                .build();
 
         streamBridge.send("notification-out-0", message);
 
