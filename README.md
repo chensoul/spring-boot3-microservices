@@ -1,4 +1,4 @@
-![video_spider](https://socialify.git.ci/chensoul/spring-boot3-microservices/image?forks=1&issues=1&language=1&name=1&owner=1&stargazers=1&theme=Light)
+![video_spider](https://socialify.git.ci/chensoul/spring-boot-3-microservices/image?forks=1&issues=1&language=1&name=1&owner=1&stargazers=1&theme=Light)
 
 <p align="center">
 <a href="README_CN.md">中文文档</a>
@@ -66,8 +66,13 @@ Video：
 Code：
 
 - https://github.com/chensoul/Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
+- https://github.com/eazybytes/microservices Grafana + Prometheus + Loki + Tempo
+- https://github.com/chensoul/spring-boot-3-microservices-course
+- https://github.com/chensoul/spring-petclinic-microservices
+- https://github.com/chensoul/spring-boot-microservices-course
 - https://github.com/chensoul/spring-boot-3-microservices-course
 - https://github.com/in28minutes/spring-microservices-v3
 - https://github.com/ali-bouali/microservices-full-code
 - https://github.com/jhipster/jhipster-lite
-- https://github.com/sivaprasadreddy/spring-boot-microservices-course
+- https://github.com/sivaprasadreddy/spring-boot-microservices-series
+- https://github.com/Nasruddin/spring-boot-based-microservices
