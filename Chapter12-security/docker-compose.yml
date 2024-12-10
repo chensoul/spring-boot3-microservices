@@ -71,7 +71,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   prometheus:
-    image: prom/prometheus:v2.55.0
+    image: prom/prometheus:v2.55.1
     command:
       - --enable-feature=exemplar-storage
       - --config.file=/etc/prometheus/prometheus.yml
