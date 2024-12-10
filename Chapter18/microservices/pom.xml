@@ -24,7 +24,7 @@
     <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
     <therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 
-    <mapstruct.version>1.6.2</mapstruct.version>
+    <mapstruct.version>1.6.3</mapstruct.version>
   </properties>
 
   <modules>
