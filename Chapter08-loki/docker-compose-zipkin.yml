@@ -1,6 +1,6 @@
 services:
   zipkin:
-    image: openzipkin/zipkin:3.4.2
+    image: openzipkin/zipkin:3.4.3
     environment:
       - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
     ports:
