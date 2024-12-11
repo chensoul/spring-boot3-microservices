@@ -47,7 +47,7 @@ services:
       - "8025:8025"
 
   kafka:
-    image: confluentinc/cp-kafka:7.7.1
+    image: confluentinc/cp-kafka:7.8.0
     container_name: kafka
     ports:
       - "9092:9092"
