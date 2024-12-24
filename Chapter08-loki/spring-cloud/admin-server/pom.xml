@@ -15,7 +15,7 @@
   <description>Spring Boot Admin server</description>
 
   <properties>
-    <spring-boot-admin.version>3.3.4</spring-boot-admin.version>
+    <spring-boot-admin.version>3.4.1</spring-boot-admin.version>
     <jolokia.version>2.1.2</jolokia.version>
   </properties>
 
