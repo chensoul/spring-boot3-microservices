@@ -17,7 +17,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <logstash-logback-encoder.version>7.3</logstash-logback-encoder.version>
+    <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
   </properties>
 
   <modules>
