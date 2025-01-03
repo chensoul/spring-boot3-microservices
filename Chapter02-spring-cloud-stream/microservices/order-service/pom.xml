@@ -16,7 +16,7 @@
   <description>Order Service</description>
 
   <properties>
-    <resilience4j.version>2.2.0</resilience4j.version>
+    <resilience4j.version>2.3.0</resilience4j.version>
     <shedlock.version>5.16.0</shedlock.version>
     <wiremock.version>3.10.0</wiremock.version>
     <wiremock-testcontainers.version>1.0-alpha-14</wiremock-testcontainers.version>
