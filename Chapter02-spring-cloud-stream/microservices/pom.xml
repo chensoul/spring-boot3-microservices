@@ -23,7 +23,7 @@
 
     <spring-cloud.version>2024.0.0</spring-cloud.version>
     <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
-    <springdocs.version>2.7.0</springdocs.version>
+    <springdocs.version>2.8.0</springdocs.version>
 
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
   </properties>
